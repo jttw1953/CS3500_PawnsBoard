@@ -1,0 +1,21 @@
+package cs3500.Model;
+
+/**
+ * An immutable snapshot of a Cell's state, for exposing via the model's API
+ * without letting callers mutate the Cell directly.
+ */
+public class ReadOnlyCell {
+    public final CellType type;
+    public final PlayerColor owner; // null if none
+    public final int pawnCount;     // 0 if not pawns
+    public final String cardName;   // "" if not a card
+
+    public ReadOnlyCell(Cell cell) {
+        this.type = cell.getType();
+        this.owner = cell.getOwner();
+        this.pawnCount = cell.getPawnCount();
+        Card c = cell.getCard();
+        this.cardName = (c == null) ? "" : c.getName();
+    }
+}
+
