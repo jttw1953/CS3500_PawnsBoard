@@ -2,9 +2,6 @@ package cs3500.pawnsboard.model;
 
 import org.junit.Test;
 
-import cs3500.pawnsboard.model.Card;
-import cs3500.pawnsboard.model.InfluenceGrid;
-
 import static org.junit.Assert.*;
 
 public class CardTest {
