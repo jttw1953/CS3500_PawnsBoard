@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PlayerState {
     private final PlayerColor color;
-    private final Deque<Card> deck; // top of the deck is the front
+    private final Deque<Card> deck;
     private final List<Card> hand;
 
     public PlayerState(PlayerColor color, List<Card> deckInOrder) {

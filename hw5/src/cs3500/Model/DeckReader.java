@@ -17,8 +17,8 @@ public class DeckReader {
      * CARD_NAME COST VALUE
      * 5 lines of 5 chars (each is X, I, or C)
      */
-    public static List<Card> readDeckFromFile(String filePath) throws FileNotFoundException {
-        File f = new File(filePath);
+    public static List<Card> readDeckFromFile(File fp) throws FileNotFoundException {
+        File f = fp;
         Scanner sc = new Scanner(f);
         List<Card> deck = new ArrayList<>();
 

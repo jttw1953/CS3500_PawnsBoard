@@ -6,6 +6,7 @@ import cs3500.Model.IPawnsBoardModel;
 import cs3500.Model.PawnsBoardModel;
 import cs3500.View.TextualView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -16,9 +17,9 @@ public class PawnsBoard {
     public static void main(String[] args) {
         try {
             // Path to your config file in docs/ folder
-            String path = "docs/deck.config";
-            // or e.g. "docs/myDeck.txt" depending on your file name
-            List<Card> deck = DeckReader.readDeckFromFile(path);
+            String path = "docs" + File.separator + "deck.config";
+            File config = new File(path);
+            List<Card> deck = DeckReader.readDeckFromFile(config);
 
             // Build the model: 3x5 board, each player gets the same deck, initial hand size=5
             IPawnsBoardModel model = new PawnsBoardModel(

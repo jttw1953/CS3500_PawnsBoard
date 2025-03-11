@@ -11,14 +11,13 @@ public class PawnsBoardModel implements IPawnsBoardModel {
     private final int rows;
     private final int cols;
 
-    // Track the two players
+    // Track the two player states
     private final PlayerState redState;
     private final PlayerState blueState;
 
     // Current player's color
     private PlayerColor currentPlayer;
 
-    // The board, rows x cols
     private final Cell[][] board;
 
     // For detecting game end (two consecutive passes)
@@ -82,10 +81,6 @@ public class PawnsBoardModel implements IPawnsBoardModel {
         this.lastWasPass = false;
         this.gameOver = false;
     }
-
-    // ----------------------------------------------------------------------------------------
-    // Core interface methods
-    // ----------------------------------------------------------------------------------------
 
     @Override
     public int getRows() {
@@ -240,10 +235,6 @@ public class PawnsBoardModel implements IPawnsBoardModel {
         return total;
     }
 
-    // ----------------------------------------------------------------------------------------
-    // Private helpers
-    // ----------------------------------------------------------------------------------------
-
     /**
      * Switch the current player from RED <-> BLUE.
      */
@@ -268,13 +259,11 @@ public class PawnsBoardModel implements IPawnsBoardModel {
         InfluenceGrid ig = card.getInfluenceGrid();
         PlayerColor owner = currentPlayer;
 
-        for (int r = 0; r < 5; r++) {
-            for (int c = 0; c < 5; c++) {
-                if (ig.getCell(r, c) == 'I') {
-                    // We map (r, c) in the 5x5 to board cells around (centerRow, centerCol).
-                    // The center in the grid is (2,2). So the delta is (r-2, c-2).
-                    int dr = r - 2;
-                    int dc = c - 2;
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 5; col++) {
+                if (ig.getCell(row, col) == 'I') {
+                    int dr = row - 2;
+                    int dc = col - 2;
 
                     // For BLUE, we flip columns => i.e. dc -> -dc
                     if (owner == PlayerColor.BLUE) {
