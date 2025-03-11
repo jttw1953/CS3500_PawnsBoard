@@ -1,4 +1,4 @@
-package cs3500.Model;
+package cs3500.pawnsboard.model;
 
 /**
  * An immutable snapshot of a Cell's state, for exposing via the model's API

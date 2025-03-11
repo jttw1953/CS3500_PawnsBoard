@@ -1,6 +1,5 @@
-package cs3500.Model;
+package cs3500.pawnsboard.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

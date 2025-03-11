@@ -1,4 +1,4 @@
-package cs3500.Model;
+package cs3500.pawnsboard.model;
 
 /**
  * Represents a card in PawnsBoard, with a name, cost, value, and a 5x5 influence grid.

@@ -1,4 +1,4 @@
-package cs3500.Model;
+package cs3500.pawnsboard.model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

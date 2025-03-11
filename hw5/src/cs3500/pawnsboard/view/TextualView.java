@@ -1,9 +1,9 @@
-package cs3500.View;
+package cs3500.pawnsboard.view;
 
 
-import cs3500.Model.IPawnsBoardModel;
-import cs3500.Model.PlayerColor;
-import cs3500.Model.ReadOnlyCell;
+import cs3500.pawnsboard.model.IPawnsBoardModel;
+import cs3500.pawnsboard.model.PlayerColor;
+import cs3500.pawnsboard.model.ReadOnlyCell;
 
 public class TextualView {
     private final IPawnsBoardModel model;

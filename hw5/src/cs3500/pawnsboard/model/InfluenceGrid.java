@@ -1,4 +1,4 @@
-package cs3500.Model;
+package cs3500.pawnsboard.model;
 
 /**
  * Represents the 5x5 influence layout of a Card.

@@ -1,10 +1,10 @@
-package cs3500;
+package cs3500.pawnsboard;
 
-import cs3500.Model.Card;
-import cs3500.Model.DeckReader;
-import cs3500.Model.IPawnsBoardModel;
-import cs3500.Model.PawnsBoardModel;
-import cs3500.View.TextualView;
+import cs3500.pawnsboard.model.Card;
+import cs3500.pawnsboard.model.DeckReader;
+import cs3500.pawnsboard.model.IPawnsBoardModel;
+import cs3500.pawnsboard.model.PawnsBoardModel;
+import cs3500.pawnsboard.view.TextualView;
 
 import java.io.File;
 import java.io.FileNotFoundException;

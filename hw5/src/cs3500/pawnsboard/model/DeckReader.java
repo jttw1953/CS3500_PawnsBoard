@@ -1,4 +1,4 @@
-package cs3500.Model;
+package cs3500.pawnsboard.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
