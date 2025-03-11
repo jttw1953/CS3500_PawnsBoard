@@ -45,4 +45,37 @@ public class CellTest {
     assertEquals(card, cell.getCard());
     assertEquals(0, cell.getPawnCount());
   }
+
+  @Test
+  public void testSetEmpty() {
+    Cell cell = new Cell();
+    cell.setPawns(PlayerColor.RED, 3);
+    cell.setEmpty();
+    assertEquals(CellType.EMPTY, cell.getType());
+    assertNull(cell.getOwner());
+    assertNull(cell.getCard());
+    assertEquals(0, cell.getPawnCount());
+  }
+
+  @Test
+  public void testChangeOwner() {
+    Cell cell = new Cell();
+    cell.setPawns(PlayerColor.RED, 2);
+    cell.changeOwner(PlayerColor.BLUE);
+
+    assertEquals(CellType.PAWNS, cell.getType());
+    assertEquals(PlayerColor.BLUE, cell.getOwner());
+    assertEquals(2, cell.getPawnCount());
+  }
+
+  @Test
+  public void testIncrementPawns() {
+    Cell cell = new Cell();
+    cell.setPawns(PlayerColor.RED, 2);
+    cell.incrementPawns(); // becomes 3
+    assertEquals(3, cell.getPawnCount());
+    cell.incrementPawns(); // tries to go to 4 => capped at 3
+    assertEquals(3, cell.getPawnCount());
+  }
+  
 }
