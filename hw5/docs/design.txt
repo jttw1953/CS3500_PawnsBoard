@@ -1,0 +1,157 @@
+============================
+   Pawns Board Design Doc
+============================
+
+====================
+1. Overview
+====================
+This document explains how user-players (human or AI) could interact with the Pawns Board model we have implemented. 
+
+Recall that our model (PawnsBoardModel) enforces the rules of the game: 
+- Turn-taking between Red and Blue,
+- Placing cards (verifying pawn ownership and cost),
+- Applying influence to convert or add pawns,
+- Calculating row-scores and final scoring,
+- Detecting when the game ends (two consecutive passes).
+
+The user-player concept is separate, focusing purely on deciding which move to make (pass or place a card).
+
+====================
+2. Model Overview
+====================
+Model Classes & Interface  
+- IPawnsBoardModel: Main interface with methods such as  
+  - placeCard(int handIndex, int row, int col)  
+  - pass()  
+  - drawCardIfPossible()  
+  - isGameOver()  
+  - getWinner()  
+  - getCellState(int row, int col), etc.
+
+- PawnsBoardModel: Concrete class implementing IPawnsBoardModel. Maintains:  
+  - A Cell[][] board (with each Cell holding pawns or a card),  
+  - Two PlayerState objects tracking each player's deck and hand,  
+  - Turn logic (Red -> Blue -> Red -> …),  
+  - Placing cards (removes pawns, sets a card in that cell),  
+  - Influence logic (mirroring for Blue, adding/converting pawns),  
+  - Scoring (row-scores, total scores).
+
+- PlayerState: Tracks a single player’s deck, hand, and color.  
+  - drawCard(), removeCardFromHand(index), etc.
+
+- DeckReader: Utility for reading a deck config file.  
+
+- TextualView: Prints the current board state in plain text (cards = R or B, pawns = 1/2/3, empty cells = '_').
+
+Currently, the model does not prompt the user for moves. It simply executes any valid move requested. 
+
+====================
+3. Defining a User-Player
+====================
+A "user-player" is any entity that decides how to move during their turn. 
+We can imagine a future interface like:
+
+----------------------------------------------------
+public interface IUserPlayer {
+  /**
+   * Get a move from this user-player, given the current game state 
+   * and the player's color.
+   */
+  Move getMove(IPawnsBoardModelReadOnly model, PlayerColor color);
+}
+----------------------------------------------------
+
+Where:
+- IPawnsBoardModelReadOnly is a read-only subset of IPawnsBoardModel (exposing getters but not setters) so the user can see the board, their hand, etc., without mutating the model.
+- Move is a simple record or class indicating either 
+  - “Pass,” or 
+  - “Place a specific card from handIndex at (row,col).”
+
+Potential Implementations
+1. HumanPlayer: 
+   - Could prompt the user through a console or GUI. 
+   - For example, "Which card do you want to place (or do you pass)?" 
+   - Returns a Move that the controller can pass to placeCard() or pass().
+
+2. AIPlayer: 
+   - Could automatically pick a move by scanning the board, deciding on an optimal or heuristic-based strategy. 
+   - For instance, it might try to place the highest-value card it can on each turn, or pass if it can’t place anything.
+
+====================
+4. Flow of a Future Game (with Controller)
+====================
+Right now, we have a main method in PawnsBoard that demonstrates a few moves (hard-coded or forced) and prints the textual view.  
+In a future assignment, we would replace these hard-coded actions with a controller that uses user-players. For example:
+
+----------------------------------------------------
+public class PawnsBoardController {
+  private final IPawnsBoardModel model;
+  private final IUserPlayer redPlayer;
+  private final IUserPlayer bluePlayer;
+  private final IView view;
+
+  public PawnsBoardController(IPawnsBoardModel model, IUserPlayer red, IUserPlayer blue, IView view) {
+    this.model = model;
+    this.redPlayer = red;
+    this.bluePlayer = blue;
+    this.view = view;
+  }
+
+  public void playGame() {
+    while (!model.isGameOver()) {
+      // The current player draws if possible
+      model.drawCardIfPossible();
+
+      PlayerColor current = model.getCurrentPlayer();
+      IUserPlayer currentUP = (current == PlayerColor.RED) ? redPlayer : bluePlayer;
+
+      // Query the user-player for a move
+      Move move = currentUP.getMove(model, current);
+
+      // Execute that move
+      if (move.isPass()) {
+        model.pass();
+      } else {
+        model.placeCard(move.getHandIndex(), move.getRow(), move.getCol());
+      }
+
+      // Show updated board
+      System.out.println(view.toString());
+    }
+
+    // Game is over; see who won
+    PlayerColor winner = model.getWinner();
+    if (winner == null) {
+      System.out.println("It's a tie!");
+    } else {
+      System.out.println("Winner is: " + winner);
+    }
+  }
+}
+----------------------------------------------------
+
+In this approach, the model enforces all rules, while the user-player chooses moves. The controller orchestrates the flow and updates the view.
+
+====================
+5. Example Instantiation
+====================
+1. Load Decks (one for Red, one for Blue) via DeckReader.  
+2. Create a PawnsBoardModel(3, 5, redDeck, blueDeck, 5).  
+3. Instantiate a user-player for Red (maybe HumanPlayer), one for Blue (AIPlayer).  
+4. Create a TextualView to render the board each turn.  
+5. Run the game loop in the controller, which repeatedly:
+   - Calls drawCardIfPossible(),
+   - Asks the current user-player for a move,
+   - Calls placeCard() or pass() on the model,
+   - Prints the updated state.
+
+====================
+6. Future Enhancements
+====================
+- Online or networked user-players: A "RemotePlayer" might receive moves from a remote client.
+- GUI integration, so a user can click cells to place a card or pass.
+
+====================
+7. Conclusion
+====================
+By separating user-players from the model, we keep the model strictly about the game's rules. Any number of user-player implementations can be plugged in. This design promotes flexibility and clarity for future expansions.
