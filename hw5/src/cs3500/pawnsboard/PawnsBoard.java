@@ -14,73 +14,73 @@ import java.util.List;
  * The main entry point for a demonstration of PawnsBoard.
  */
 public class PawnsBoard {
-    public static void main(String[] args) {
-        try {
-            // Path to your config file in docs/ folder
-            String path = "docs" + File.separator + "deck.config";
-            File config = new File(path);
-            List<Card> deck = DeckReader.readDeckFromFile(config);
+  public static void main(String[] args) {
+    try {
+      // Path to your config file in docs/ folder
+      String path = "docs" + File.separator + "deck.config";
+      File config = new File(path);
+      List<Card> deck = DeckReader.readDeckFromFile(config);
 
-            // Build the model: 3x5 board, each player gets the same deck, initial hand size=5
-            IPawnsBoardModel model = new PawnsBoardModel(
-                    3, 5,
-                    deck, // red deck
-                    deck, // blue deck
-                    5
-            );
+      // Build the model: 3x5 board, each player gets the same deck, initial hand size=5
+      IPawnsBoardModel model = new PawnsBoardModel(
+              3, 5,
+              deck, // red deck
+              deck, // blue deck
+              5
+      );
 
-            TextualView view = new TextualView(model);
+      TextualView view = new TextualView(model);
 
-            System.out.println("Initial state:");
-            System.out.println(view.toString());
+      System.out.println("Initial state:");
+      System.out.println(view.toString());
 
-            // We'll do a simple demonstration of a few moves:
+      // We'll do a simple demonstration of a few moves:
 
-            // 1. Red tries to draw (though it's already got 5, but let's do it).
-            model.drawCardIfPossible();
-            System.out.println(view);
+      // 1. Red tries to draw (though it's already got 5, but let's do it).
+      model.drawCardIfPossible();
+      System.out.println(view);
 
-            // 2. Red places the first card in their hand at (0, 0) if possible.
-            //    That cell has 1 Red pawn, so hopefully the cost is 1.
-            try {
-                model.placeCard(0, 0, 0);
-            } catch (Exception e) {
-                System.out.println("Red can't place at (0,0): " + e.getMessage());
-                model.pass(); // pass instead
-            }
-            System.out.println(view);
+      // 2. Red places the first card in their hand at (0, 0) if possible.
+      //    That cell has 1 Red pawn, so hopefully the cost is 1.
+      try {
+        model.placeCard(0, 0, 0);
+      } catch (Exception e) {
+        System.out.println("Red can't place at (0,0): " + e.getMessage());
+        model.pass(); // pass instead
+      }
+      System.out.println(view);
 
-            // 3. Blue turn - draw
-            model.drawCardIfPossible();
-            System.out.println(view);
+      // 3. Blue turn - draw
+      model.drawCardIfPossible();
+      System.out.println(view);
 
-            // 4. Let's attempt to place a card for Blue in (0,4),
-            //    which has 1 Blue pawn if the cost is 1
-            try {
-                model.placeCard(0, 0, 4);
-            } catch (Exception e) {
-                System.out.println("Blue can't place at (0,4): " + e.getMessage());
-                model.pass();
-            }
-            System.out.println(view);
+      // 4. Let's attempt to place a card for Blue in (0,4),
+      //    which has 1 Blue pawn if the cost is 1
+      try {
+        model.placeCard(0, 0, 4);
+      } catch (Exception e) {
+        System.out.println("Blue can't place at (0,4): " + e.getMessage());
+        model.pass();
+      }
+      System.out.println(view);
 
-            // keep going until no moves remain or we've done enough for demonstration
-            // For a real demonstration, you'd either script out multiple moves
-            // or do a loop that tries to place any valid card, else pass,
-            // until gameOver.
+      // keep going until no moves remain or we've done enough for demonstration
+      // For a real demonstration, you'd either script out multiple moves
+      // or do a loop that tries to place any valid card, else pass,
+      // until gameOver.
 
-            // We'll do forced passes to end quickly
-            model.pass(); // Red passes
-            System.out.println(view);
+      // We'll do forced passes to end quickly
+      model.pass(); // Red passes
+      System.out.println(view);
 
-            model.pass(); // Blue passes => triggers game over
-            System.out.println(view);
+      model.pass(); // Blue passes => triggers game over
+      System.out.println(view);
 
-            System.out.println("Done demonstration.");
+      System.out.println("Done demonstration.");
 
-        } catch (FileNotFoundException e) {
-            System.err.println("Could not find deck file!");
-        }
+    } catch (FileNotFoundException e) {
+      System.err.println("Could not find deck file!");
     }
+  }
 }
 

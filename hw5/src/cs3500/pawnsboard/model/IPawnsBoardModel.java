@@ -7,57 +7,58 @@ import java.util.List;
  */
 public interface IPawnsBoardModel {
 
-    int getRows();
-    int getCols();
+  int getRows();
 
-    PlayerColor getCurrentPlayer();
+  int getCols();
 
-    /**
-     * If the deck isn't empty for the current player, draw the top card.
-     */
-    void drawCardIfPossible();
+  PlayerColor getCurrentPlayer();
 
-    /**
-     * Place a card from the current player's hand at (row, col), applying the rules:
-     * - cell must have at least 'cost' pawns owned by current player
-     * - if legal, remove those pawns, place card, apply influence
-     * - switch turns
-     */
-    void placeCard(int handIndex, int row, int col);
+  /**
+   * If the deck isn't empty for the current player, draw the top card.
+   */
+  void drawCardIfPossible();
 
-    /**
-     * Current player passes. If both players pass consecutively, the game ends.
-     */
-    void pass();
+  /**
+   * Place a card from the current player's hand at (row, col), applying the rules:
+   * - cell must have at least 'cost' pawns owned by current player
+   * - if legal, remove those pawns, place card, apply influence
+   * - switch turns
+   */
+  void placeCard(int handIndex, int row, int col);
 
-    /**
-     * True if the game is over (both players have passed in a row).
-     */
-    boolean isGameOver();
+  /**
+   * Current player passes. If both players pass consecutively, the game ends.
+   */
+  void pass();
 
-    /**
-     * Return the winner's color, or null if tie or if the game isn't over.
-     */
-    PlayerColor getWinner();
+  /**
+   * True if the game is over (both players have passed in a row).
+   */
+  boolean isGameOver();
 
-    /**
-     * Get read-only info about the cell at (row, col).
-     */
-    ReadOnlyCell getCellState(int row, int col);
+  /**
+   * Return the winner's color, or null if tie or if the game isn't over.
+   */
+  PlayerColor getWinner();
 
-    /**
-     * Return an unmodifiable view of the current player's hand.
-     */
-    List<Card> getCurrentPlayerHand();
+  /**
+   * Get read-only info about the cell at (row, col).
+   */
+  ReadOnlyCell getCellState(int row, int col);
 
-    /**
-     * Row-score for a given row and color (sum of card values in that row belonging to color).
-     */
-    int getRowScore(int row, PlayerColor color);
+  /**
+   * Return an unmodifiable view of the current player's hand.
+   */
+  List<Card> getCurrentPlayerHand();
 
-    /**
-     * Return the total score for a color (sum of that color’s winning row-scores).
-     */
-    int getTotalScore(PlayerColor color);
+  /**
+   * Row-score for a given row and color (sum of card values in that row belonging to color).
+   */
+  int getRowScore(int row, PlayerColor color);
+
+  /**
+   * Return the total score for a color (sum of that color’s winning row-scores).
+   */
+  int getTotalScore(PlayerColor color);
 }
 

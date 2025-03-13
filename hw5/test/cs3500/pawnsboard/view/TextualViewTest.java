@@ -1,10 +1,14 @@
 package cs3500.pawnsboard.view;
 
-import cs3500.Model.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+
+import cs3500.pawnsboard.model.Card;
+import cs3500.pawnsboard.model.IPawnsBoardModel;
+import cs3500.pawnsboard.model.InfluenceGrid;
+import cs3500.pawnsboard.model.PawnsBoardModel;
 
 import static org.junit.Assert.*;
 
@@ -40,11 +44,9 @@ public class TextualViewTest {
 
     @Test
     public void testInitialBoardView() {
-        // Right after creation, each row => col=0 has RED pawn '1', col=4 has BLUE pawn '1', others empty '_'
-        // Also row-scores = 0, since no cards placed.
 
         String output = view.toString();
-        // We expect "Current Player: RED" because Red starts
+        // expect "Current Player: RED" because Red starts
         assertTrue(output.contains("Current Player: RED"));
         // Each row should look like:
         // row 0 => "1___1  (R=0, B=0)"
@@ -62,28 +64,26 @@ public class TextualViewTest {
     public void testMidGameViewAfterPlacingCard() {
         // Red has 1 card in hand => cost=1 => can place at (0,0).
         model.placeCard(0, 0, 0);
-        // Now Blue turn
+        // Blue turn
         String output = view.toString();
 
         // Check "Current Player: BLUE"
         assertTrue(output.contains("Current Player: BLUE"));
 
-        // Row 0 => 'R' at col=0 now, underscores in the middle, '1' at col=4
-        // e.g. "R___1  (R=2, B=0)" because that card has value=2
-        // Just check that row 0 starts with "R" and ends with "1" and that R=2 in the row-scores.
-        assertTrue(output.contains("R") && output.contains("1") && output.contains("(R=2, B=0)"));
+        // check that row 0 starts with "R" and ends with "1" and that R=2 in the row-scores
+        assertTrue(output.contains("R") && output.contains("1") &&
+                output.contains("(R=2, B=0)"));
 
     }
 
     @Test
     public void testViewWhenGameOver() {
         // Force the game to end with consecutive passes
-        model.pass(); // Now BLUE
-        model.pass(); // gameOver = true
+        model.pass();
+        model.pass();
 
-        // Re-generate the string
         String output = view.toString();
-        // We expect "GAME OVER" plus final board layout lines, "Final totals => ..." and "It's a tie!"
+        // expect "GAME OVER" plus final board layout lines
         assertTrue(output.contains("GAME OVER"));
         assertTrue(output.contains("Final totals => RED: 0 | BLUE: 0"));
         assertTrue(output.contains("It's a tie!"));

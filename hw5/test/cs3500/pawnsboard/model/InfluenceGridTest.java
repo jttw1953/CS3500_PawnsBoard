@@ -1,7 +1,8 @@
 package cs3500.pawnsboard.model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class InfluenceGridTest {
 
