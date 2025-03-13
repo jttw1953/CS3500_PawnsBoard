@@ -49,25 +49,27 @@ public class PawnsBoardModel implements IPawnsBoardModel {
     this.rows = rows;
     this.cols = cols;
     this.board = new Cell[rows][cols];
+    
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
         board[r][c] = new Cell();
       }
     }
 
-    // place 1 red pawn in col=0 for each row
+    // Place starting pawns
     for (int r = 0; r < rows; r++) {
       board[r][0].setPawns(PlayerColor.RED, 1);
-    }
-    // place 1 blue pawn in col=(cols-1) for each row
-    for (int r = 0; r < rows; r++) {
       board[r][cols - 1].setPawns(PlayerColor.BLUE, 1);
     }
+
+    // Shuffle the decks before creating player states
+    Collections.shuffle(redDeck);
+    Collections.shuffle(blueDeck);
 
     this.redState = new PlayerState(PlayerColor.RED, redDeck);
     this.blueState = new PlayerState(PlayerColor.BLUE, blueDeck);
 
-    // deal initialHandSize to each player
+    // Deal initial hands
     for (int i = 0; i < initialHandSize; i++) {
       if (redState.hasNextCard()) {
         redState.drawCard();
