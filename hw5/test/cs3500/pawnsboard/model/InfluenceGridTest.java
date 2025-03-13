@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests for InfluenceGrid class.
+ */
 public class InfluenceGridTest {
 
   @Test

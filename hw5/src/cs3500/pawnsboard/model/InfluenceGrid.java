@@ -7,6 +7,12 @@ package cs3500.pawnsboard.model;
 public class InfluenceGrid {
   private final char[][] grid; // always 5x5
 
+  /**
+   * Constructs a 5x5 InfluenceGrid.
+   * @param in the 5x5 character array representing influence
+   *           ('I' for affected cells, 'X' for none, 'C' for center).
+   * @throws IllegalArgumentException if the grid is not 5x5 or if the center [2,2] is not 'C'.
+   */
   public InfluenceGrid(char[][] in) {
     if (in.length != 5 || in[0].length != 5) {
       throw new IllegalArgumentException("Influence grid must be 5x5");

@@ -13,6 +13,11 @@ public class PlayerState {
   private final Deque<Card> deck;
   private final List<Card> hand;
 
+  /**
+   * Constructs a PlayerState with a given color and deck.
+   * @param color         the player's color (RED or BLUE).
+   * @param deckInOrder   the player's deck of cards (must not be null).
+   */
   public PlayerState(PlayerColor color, List<Card> deckInOrder) {
     this.color = color;
     // no shuffle => store as given
@@ -25,7 +30,7 @@ public class PlayerState {
   }
 
   /**
-   * Is there a card left in our deck to draw?
+   * Check if there is a card left in our deck to draw.
    */
   public boolean hasNextCard() {
     return !deck.isEmpty();

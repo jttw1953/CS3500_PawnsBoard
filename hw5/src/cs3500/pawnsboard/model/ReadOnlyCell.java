@@ -10,6 +10,10 @@ public class ReadOnlyCell {
   public final int pawnCount;     // 0 if not pawns
   public final String cardName;   // "" if not a card
 
+  /**
+   * Constructs a ReadOnlyCell from a given Cell.
+   * @param cell the cell to create a read-only version of.
+   */
   public ReadOnlyCell(Cell cell) {
     this.type = cell.getType();
     this.owner = cell.getOwner();

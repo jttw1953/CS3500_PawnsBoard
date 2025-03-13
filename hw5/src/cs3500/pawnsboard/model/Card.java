@@ -9,6 +9,14 @@ public class Card {
   private final int value;  // must be > 0
   private final InfluenceGrid grid;
 
+  /**
+   * Constructs a Card with a name, cost, value, and influence grid.
+   * @param name  the name of the card (must be a non-empty string).
+   * @param cost  the cost in pawns to play this card (must be between 1 and 3).
+   * @param value the score value of the card (must be greater than 0).
+   * @param grid  the 5x5 influence grid defining the card’s effect.
+   * @throws IllegalArgumentException if cost is not in range [1,3] or value is <= 0.
+   */
   public Card(String name, int cost, int value, InfluenceGrid grid) {
     if (cost < 1 || cost > 3) {
       throw new IllegalArgumentException("Cost must be between 1 and 3");

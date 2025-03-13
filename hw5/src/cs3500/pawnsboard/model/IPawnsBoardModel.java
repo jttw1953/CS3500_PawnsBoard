@@ -19,7 +19,7 @@ public interface IPawnsBoardModel {
   void drawCardIfPossible();
 
   /**
-   * Place a card from the current player's hand at (row, col), applying the rules:
+   * Place a card from the current player's hand at (row, col), applying the rules below.
    * - cell must have at least 'cost' pawns owned by current player
    * - if legal, remove those pawns, place card, apply influence
    * - switch turns

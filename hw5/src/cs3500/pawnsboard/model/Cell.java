@@ -12,6 +12,10 @@ public class Cell {
   private Card card;         // if type == CARD
   private int pawnCount;     // if type == PAWNS, between 0 and 3 inclusive
 
+  /**
+   * Constructs an empty cell.
+   * Initially, the cell has no owner, no card, and no pawns.
+   */
   public Cell() {
     this.type = CellType.EMPTY;
     this.owner = null;

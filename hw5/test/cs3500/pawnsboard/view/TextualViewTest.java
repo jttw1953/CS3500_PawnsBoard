@@ -10,7 +10,8 @@ import cs3500.pawnsboard.model.IPawnsBoardModel;
 import cs3500.pawnsboard.model.InfluenceGrid;
 import cs3500.pawnsboard.model.PawnsBoardModel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the TextualView's output under various game states.

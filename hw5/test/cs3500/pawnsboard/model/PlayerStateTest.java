@@ -16,12 +16,11 @@ import static org.junit.Assert.assertTrue;
 public class PlayerStateTest {
 
   private PlayerState redState;
-  private List<Card> smallDeck;
 
   @Before
   public void setup() {
     // Create a small deck of 3 identical cards
-    smallDeck = new ArrayList<>();
+    List<Card> smallDeck = new ArrayList<>();
     char[][] grid = {
             {'X', 'X', 'I', 'X', 'X'},
             {'X', 'X', 'I', 'X', 'X'},

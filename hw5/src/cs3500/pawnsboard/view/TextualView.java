@@ -5,6 +5,11 @@ import cs3500.pawnsboard.model.IPawnsBoardModel;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.ReadOnlyCell;
 
+
+/**
+ * Represents a textual view for the Pawns Board game.
+ * Converts the board state into a human-readable string format.
+ */
 public class TextualView {
   private final IPawnsBoardModel model;
 

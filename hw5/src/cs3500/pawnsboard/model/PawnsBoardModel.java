@@ -25,7 +25,6 @@ public class PawnsBoardModel implements IPawnsBoardModel {
 
   /**
    * Construct a PawnsBoardModel.
-   *
    * @param rows            number of rows (>0)
    * @param cols            number of columns (>1 and odd)
    * @param redDeck         a list of cards for red

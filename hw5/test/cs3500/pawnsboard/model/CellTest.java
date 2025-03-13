@@ -5,6 +5,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Tests for Cell class.
+ */
 public class CellTest {
 
   @Test
@@ -74,9 +77,9 @@ public class CellTest {
   public void testIncrementPawns() {
     Cell cell = new Cell();
     cell.setPawns(PlayerColor.RED, 2);
-    cell.incrementPawns(); // becomes 3
+    cell.incrementPawns();
     assertEquals(3, cell.getPawnCount());
-    cell.incrementPawns(); // tries to go to 4 => capped at 3
+    cell.incrementPawns();
     assertEquals(3, cell.getPawnCount());
   }
   
