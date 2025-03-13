@@ -45,6 +45,12 @@ public class PawnsBoardModel implements IPawnsBoardModel {
       throw new IllegalArgumentException("Decks cannot be null");
     }
 
+    int redMax = (int) Math.ceil(redDeck.size() / 3.0);
+    int blueMax = (int) Math.ceil(blueDeck.size() / 3.0);
+    if (initialHandSize > redMax || initialHandSize > blueMax) {
+      throw new IllegalArgumentException("Initial hand size cannot be greater than one-third of the deck size.");
+    }
+
     this.rows = rows;
     this.cols = cols;
     this.board = new Cell[rows][cols];
