@@ -30,6 +30,19 @@ public class PawnsBoardModel implements IPawnsBoardModel {
    * @param redDeck         a list of cards for red
    * @param blueDeck        a list of cards for blue
    * @param initialHandSize the starting number of cards each player draws
+   *
+   * Class Invariants:
+   * - The board always has the correct dimensions (rows × cols)
+   * - Each player starts with a valid deck, and decks cannot be null.
+   * - The game can only end after two consecutive passes.
+   * - A card can only be placed on a cell containing enough pawns of the current player.
+   * - Players alternate turns—no player can play twice in a row.
+   *
+   * How These Invariants Are Enforced:
+   * - The constructor ensures the board is initialized correctly and that decks are not null.
+   * - The game enforces valid card placement by checking cell ownership and pawn cost.
+   * - The method for switching players ensures turns always alternate.
+   * - The game-ending condition is only triggered after two consecutive passes.
    */
   public PawnsBoardModel(int rows, int cols,
                          List<Card> redDeck,
