@@ -2,7 +2,6 @@ package cs3500.pawnsboard.View;
 
 import cs3500.pawnsboard.Model.ReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.Model.ReadOnlyCell;
-import cs3500.pawnsboard.Model.CellType;
 import cs3500.pawnsboard.Model.PlayerColor;
 
 import javax.swing.JPanel;

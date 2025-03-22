@@ -5,6 +5,17 @@ import java.util.List;
 
 /**
  * Concrete implementation of IPawnsBoardModel for Pawns Board.
+ * Class Invariants:
+ * - The board always has the correct dimensions (rows × cols)
+ * - Each player starts with a valid deck, and decks cannot be null.
+ * - The game can only end after two consecutive passes.
+ * - A card can only be placed on a cell containing enough pawns of the current player.
+ * - Players alternate turns—no player can play twice in a row.
+ * How These Invariants Are Enforced:
+ * - The constructor ensures the board is initialized correctly and that decks are not null.
+ * - The game enforces valid card placement by checking cell ownership and pawn cost.
+ * - The method for switching players ensures turns always alternate.
+ * - The game-ending condition is only triggered after two consecutive passes.
  */
 public class PawnsBoardModel implements IPawnsBoardModel {
   private final int rows;
@@ -25,24 +36,12 @@ public class PawnsBoardModel implements IPawnsBoardModel {
 
   /**
    * Construct a PawnsBoardModel.
+   *
    * @param rows            number of rows (>0)
    * @param cols            number of columns (>1 and odd)
    * @param redDeck         a list of cards for red
    * @param blueDeck        a list of cards for blue
    * @param initialHandSize the starting number of cards each player draws
-   *
-   * Class Invariants:
-   * - The board always has the correct dimensions (rows × cols)
-   * - Each player starts with a valid deck, and decks cannot be null.
-   * - The game can only end after two consecutive passes.
-   * - A card can only be placed on a cell containing enough pawns of the current player.
-   * - Players alternate turns—no player can play twice in a row.
-   *
-   * How These Invariants Are Enforced:
-   * - The constructor ensures the board is initialized correctly and that decks are not null.
-   * - The game enforces valid card placement by checking cell ownership and pawn cost.
-   * - The method for switching players ensures turns always alternate.
-   * - The game-ending condition is only triggered after two consecutive passes.
    */
   public PawnsBoardModel(int rows, int cols,
                          List<Card> redDeck,
@@ -61,13 +60,14 @@ public class PawnsBoardModel implements IPawnsBoardModel {
     int redMax = (int) Math.ceil(redDeck.size() / 3.0);
     int blueMax = (int) Math.ceil(blueDeck.size() / 3.0);
     if (initialHandSize > redMax || initialHandSize > blueMax) {
-      throw new IllegalArgumentException("Initial hand size cannot be greater than one-third of the deck size.");
+      throw new IllegalArgumentException("Initial hand size cannot be " +
+              "greater than one-third of the deck size.");
     }
 
     this.rows = rows;
     this.cols = cols;
     this.board = new Cell[rows][cols];
-    
+
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
         board[r][c] = new Cell();

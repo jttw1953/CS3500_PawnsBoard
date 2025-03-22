@@ -1,8 +1,5 @@
 package cs3500.pawnsboard.Strategy;
 
-import cs3500.pawnsboard.Strategy.Strategy;
-import cs3500.pawnsboard.Strategy.FillFirstStrategy;
-import cs3500.pawnsboard.Strategy.Move;
 import cs3500.pawnsboard.Model.ReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.Model.PlayerColor;
 import cs3500.pawnsboard.Model.Card;

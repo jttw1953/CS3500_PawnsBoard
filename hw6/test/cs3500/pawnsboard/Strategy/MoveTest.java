@@ -1,6 +1,5 @@
 package cs3500.pawnsboard.Strategy;
 
-import cs3500.pawnsboard.Strategy.Move;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

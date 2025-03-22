@@ -1,8 +1,5 @@
 package cs3500.pawnsboard.Strategy;
 
-import cs3500.pawnsboard.Strategy.Strategy;
-import cs3500.pawnsboard.Strategy.MaxRowScoreStrategy;
-import cs3500.pawnsboard.Strategy.Move;
 import cs3500.pawnsboard.Model.Card;
 import cs3500.pawnsboard.Model.CellType;
 import cs3500.pawnsboard.Model.PlayerColor;
