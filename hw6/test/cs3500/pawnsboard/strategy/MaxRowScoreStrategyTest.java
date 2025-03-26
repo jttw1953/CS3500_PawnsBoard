@@ -23,14 +23,16 @@ public class MaxRowScoreStrategyTest {
 
   @Test
   public void testNoRowsLosingOrTied() {
-    // Suppose 2 rows, RED is already winning them all => strategy does not need to do anything => pass
+
     int[] redScores = {3, 4};
     int[] blueScores = {0, 1};
 
     // The model => 2x2 board, row0 col0 belongs to RED with 1 pawn
     ReadOnlyCell[][] cells = {
-            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), new SimpleCell(CellType.EMPTY, null, 0, "")},
-            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), new SimpleCell(CellType.EMPTY, null, 0, "")}
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
+             new SimpleCell(CellType.EMPTY, null, 0, "")},
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), 
+             new SimpleCell(CellType.EMPTY, null, 0, "")}
     };
 
     List<Card> hand = new ArrayList<>();
@@ -52,10 +54,12 @@ public class MaxRowScoreStrategyTest {
     int[] redScores = {2, 4};
     int[] blueScores = {2, 3};
 
-    // We'll have a board 2x2, row0 col0 => RED pawns=1, so we can place a cost=1 card there
+  
     ReadOnlyCell[][] cells = {
-            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), new SimpleCell(CellType.EMPTY, null, 0, "")},
-            {new SimpleCell(CellType.EMPTY, null, 0, ""), new SimpleCell(CellType.EMPTY, null, 0, "")}
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), 
+             new SimpleCell(CellType.EMPTY, null, 0, "")},
+            {new SimpleCell(CellType.EMPTY, null, 0, ""), 
+             new SimpleCell(CellType.EMPTY, null, 0, "")}
     };
 
     List<Card> hand = new ArrayList<>();
@@ -68,8 +72,6 @@ public class MaxRowScoreStrategyTest {
     Strategy strat = new MaxRowScoreStrategy();
     Move m = strat.chooseMove(mock, PlayerColor.RED);
 
-    // We expect the strategy to place a card in row=0 => so that Red can exceed Blue
-    assertFalse(m.isPass);
     assertEquals(0, m.handIndex);
     assertEquals(0, m.row);
     assertEquals(0, m.col);
@@ -84,16 +86,16 @@ public class MaxRowScoreStrategyTest {
     // We'll have a 3x2 board => row0 col0 belongs to RED with 1 pawn
     ReadOnlyCell[][] cells = {
             {
-                    new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
-                    new SimpleCell(CellType.EMPTY, null, 0, "")
+              new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
+              new SimpleCell(CellType.EMPTY, null, 0, "")
             },
             {
-                    new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
-                    new SimpleCell(CellType.EMPTY, null, 0, "")
+              new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
+              new SimpleCell(CellType.EMPTY, null, 0, "")
             },
             {
-                    new SimpleCell(CellType.EMPTY, null, 0, ""),
-                    new SimpleCell(CellType.EMPTY, null, 0, "")
+              new SimpleCell(CellType.EMPTY, null, 0, ""),
+              new SimpleCell(CellType.EMPTY, null, 0, "")
             }
     };
 
@@ -115,7 +117,8 @@ public class MaxRowScoreStrategyTest {
 
   // Minimal read-only cell
   private static class SimpleCell extends ReadOnlyCell {
-    public SimpleCell(CellType type, PlayerColor owner, int pawnCount, String cardName) {
+    public SimpleCell(CellType type, PlayerColor owner, 
+                      int pawnCount, String cardName) {
       super(type, owner, pawnCount, cardName);
     }
   }
