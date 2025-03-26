@@ -6,11 +6,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the PlayerState class in isolation.
- * Ensures correct hand/deck behavior including drawing, 
+ * Ensures correct hand/deck behavior including drawing,
  * removing, and error handling.
  */
 public class PlayerStateTest {
@@ -26,8 +28,7 @@ public class PlayerStateTest {
             {'X', 'X', 'I', 'X', 'X'},
             {'I', 'I', 'C', 'I', 'I'},
             {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'X', 'I', 'X', 'X'}
-    };
+            {'X', 'X', 'I', 'X', 'X'}};
     InfluenceGrid ig = new InfluenceGrid(grid);
     for (int i = 1; i <= 3; i++) {
       smallDeck.add(new Card("TestCard" + i, 1, i, ig));

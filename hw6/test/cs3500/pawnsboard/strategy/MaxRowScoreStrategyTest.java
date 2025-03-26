@@ -31,9 +31,8 @@ public class MaxRowScoreStrategyTest {
     ReadOnlyCell[][] cells = {
             {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
              new SimpleCell(CellType.EMPTY, null, 0, "")},
-            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), 
-             new SimpleCell(CellType.EMPTY, null, 0, "")}
-    };
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
+             new SimpleCell(CellType.EMPTY, null, 0, "")}};
 
     List<Card> hand = new ArrayList<>();
     hand.add(new Card("C1", 1, 2, null));
@@ -54,11 +53,11 @@ public class MaxRowScoreStrategyTest {
     int[] redScores = {2, 4};
     int[] blueScores = {2, 3};
 
-  
+
     ReadOnlyCell[][] cells = {
-            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""), 
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
              new SimpleCell(CellType.EMPTY, null, 0, "")},
-            {new SimpleCell(CellType.EMPTY, null, 0, ""), 
+            {new SimpleCell(CellType.EMPTY, null, 0, ""),
              new SimpleCell(CellType.EMPTY, null, 0, "")}
     };
 
@@ -85,17 +84,14 @@ public class MaxRowScoreStrategyTest {
 
     // We'll have a 3x2 board => row0 col0 belongs to RED with 1 pawn
     ReadOnlyCell[][] cells = {
-            {
-              new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
-              new SimpleCell(CellType.EMPTY, null, 0, "")
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
+             new SimpleCell(CellType.EMPTY, null, 0, "")
             },
-            {
-              new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
-              new SimpleCell(CellType.EMPTY, null, 0, "")
+            {new SimpleCell(CellType.PAWNS, PlayerColor.RED, 1, ""),
+             new SimpleCell(CellType.EMPTY, null, 0, "")
             },
-            {
-              new SimpleCell(CellType.EMPTY, null, 0, ""),
-              new SimpleCell(CellType.EMPTY, null, 0, "")
+            {new SimpleCell(CellType.EMPTY, null, 0, ""),
+             new SimpleCell(CellType.EMPTY, null, 0, "")
             }
     };
 
@@ -117,7 +113,7 @@ public class MaxRowScoreStrategyTest {
 
   // Minimal read-only cell
   private static class SimpleCell extends ReadOnlyCell {
-    public SimpleCell(CellType type, PlayerColor owner, 
+    public SimpleCell(CellType type, PlayerColor owner,
                       int pawnCount, String cardName) {
       super(type, owner, pawnCount, cardName);
     }
