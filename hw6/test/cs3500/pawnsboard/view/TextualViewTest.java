@@ -49,7 +49,8 @@ public class TextualViewTest {
 
   @Test
   public void testInitialBoardView() {
-    // Right after creation, each row => col=0 has RED pawn '1', col=4 has BLUE pawn '1', others empty '_'
+    // Right after creation, each row => col=0 has RED pawn '1',
+    // col=4 has BLUE pawn '1', others empty '_'
     // Also row-scores = 0, since no cards placed.
 
     String output = view.toString();
