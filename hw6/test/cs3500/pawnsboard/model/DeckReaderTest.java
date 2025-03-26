@@ -11,8 +11,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for DeckReader.
+ * Verifies that deck files are read and parsed into Card objects correctly.
+ */
 public class DeckReaderTest {
 
+  /**
+   * Tests reading a valid deck configuration file.
+   * Ensures the resulting deck is non-null, non-empty, and the first Card has valid attributes.
+   */
   @Test
   public void testReadValidDeck() throws Exception {
     File file = new File("docs/deck.config");
@@ -27,6 +35,10 @@ public class DeckReaderTest {
     assertTrue(firstCard.getValue() > 0);
   }
 
+  /**
+   * Tests that attempting to read from a nonexistent file
+   * results in a FileNotFoundException.
+   */
   @Test(expected = java.io.FileNotFoundException.class)
   public void testFileNotFound() throws Exception {
     File file = new File("nonexistent-file.config");
@@ -37,3 +49,4 @@ public class DeckReaderTest {
   // This might throw an exception or might do something else, depending on your design.
   // The assignment says "unspecified" if format is invalid.
 }
+
