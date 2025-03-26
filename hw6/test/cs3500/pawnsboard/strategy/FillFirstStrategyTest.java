@@ -23,7 +23,8 @@ public class FillFirstStrategyTest {
 
   @Test
   public void testNoValidMovesLeadsToPass() {
-    // Mock a scenario where current player is RED, has 2 cards but no cell belongs to RED, or not enough pawns
+    // Mock a scenario where current player is RED, has 2 cards but no cell belongs to RED, 
+    // or not enough pawns
     List<Card> hand = new ArrayList<>();
     hand.add(new Card("C1", 1, 2, null)); // cost=1, value=2
     hand.add(new Card("C2", 1, 3, null));
@@ -63,7 +64,8 @@ public class FillFirstStrategyTest {
     Strategy strat = new FillFirstStrategy();
     Move move = strat.chooseMove(mock, PlayerColor.RED);
 
-    // Fill-first => it scans from row=0 col=0 => sees empty => not valid => row=0 col=1 => valid => picks that
+    // Fill-first => it scans from row=0 col=0 => sees empty => 
+    // not valid => row=0 col=1 => valid => picks that
     assertFalse(move.isPass);
     assertEquals(0, move.handIndex); // the first card in hand
     assertEquals(0, move.row);
