@@ -7,7 +7,11 @@ import cs3500.pawnsboard.model.InfluenceGrid;
 
 import javax.swing.JPanel;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -22,6 +26,18 @@ public class HandPanel extends JPanel {
   // Track which card index is selected
   private int selectedCardIndex = -1;
 
+  /**
+   * Constructs a new HandPanel, a visual component for displaying
+   * the current player's hand of cards in the GUI view of the Pawns Board game.
+   * The panel lays out the player's cards horizontally across the bottom of the window.
+   * When a user clicks on a card, it becomes selected or deselected (if already selected),
+   * and the controller is notified via onCardClicked(cardIndex).
+   * The panel automatically resizes to fit the number of cards, and has a fixed
+   * preferred height for consistent layout within the window.
+   *
+   * @param model the read-only view of the game model used to render the current player's hand
+   * @throws NullPointerException if the model is null
+   */
   public HandPanel(ReadOnlyPawnsBoardModel model) {
     super();
     this.model = model;

@@ -1,10 +1,13 @@
 package cs3500.pawnsboard.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.ReadOnlyCell;
@@ -26,8 +29,6 @@ public class BoardPanel extends JPanel {
    * Constructs a new {@code BoardPanel} that displays the current state of the game board
    * using a read-only model. This panel handles rendering of cells, pawn counts, card placements,
    * and user interaction via mouse clicks.
-   *
-   *
    * A mouse listener is added to detect cell selections when the user clicks on a cell.
    * The selected cell is stored internally and passed to the view controller (if connected)
    * through the {@code onCellClicked(row, col)} callback.

@@ -17,12 +17,11 @@ public class MaxRowScoreStrategy implements Strategy {
    * This strategy scans the board row-by-row from top to bottom, comparing the current player's
    * row score against the opponent's. If the player is losing or tied in a row, it attempts
    * to place a card in that row to gain an advantage.
-   *
    * A card is considered placeable if:
-   * - The target cell is of type PAWNS</li>
-   * - The cell is owned by the current player</li>
-   * - The player has enough pawns in the cell to pay the card’s cost</li>
-   * - The card has a value greater than 0 (i.e., contributes influence)</li>
+   * - The target cell is of type PAWNS
+   * - The cell is owned by the current player
+   * - The player has enough pawns in the cell to pay the card’s cost
+   * - The card has a value greater than 0 (i.e., contributes influence)
    * If no such move is found that might improve the score, the strategy passes.
    *
    * @param model the read-only view of the game model

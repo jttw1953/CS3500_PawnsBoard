@@ -17,6 +17,12 @@ import cs3500.pawnsboard.view.PawnsBoardSwingView;
  * The main entry point for a demonstration of PawnsBoard.
  */
 public class PawnsBoard {
+  /**
+   * The main entry point for a demonstration of the PawnsBoard game.
+   * This method initializes the game model, loads the deck configuration,
+   * and runs a simple demonstration of gameplay.
+   * @param args command-line arguments
+   */
   public static void main(String[] args) {
     try {
       String path = "docs/deck.config";
