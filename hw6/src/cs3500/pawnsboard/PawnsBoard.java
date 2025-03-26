@@ -25,8 +25,6 @@ public class PawnsBoard {
             List<Card> deck = DeckReader.readDeckFromFile(path);
 
             // Build the model: 5x7 board, each player gets the same deck, initial hand size=5
-            // (Make sure inside PawnsBoardModel you comment out the shuffle lines if you want
-            // guaranteed first cards to be cost=1, etc.)
             IPawnsBoardModel model = new PawnsBoardModel(
                     5, 7,
                     deck, // red deck
@@ -34,8 +32,7 @@ public class PawnsBoard {
                     5
             );
 
-            // Force one pass so that it's Blue's turn instead of Red's
-            model.pass();
+            // No moves, no passes => still Red's turn, no cards placed
 
             // Wrap the model in a read-only reference
             ReadOnlyPawnsBoardModel roModel = model;
