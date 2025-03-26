@@ -85,7 +85,7 @@ test/cs3500/pawnsboard
 └── View/
     ├── TextualViewTest.java
     └── PawnsBoardSwingViewTest.java
-
+```
 
 
 ## Changes for Part 2
@@ -111,5 +111,96 @@ Test coverage is provided via mock-based tests in:
 
 The required transcripts (`strategy-transcript-first.txt` and `strategy-transcript-score.txt`) show the mocked method calls made by each strategy.
 
+## Extra Credit Strategies
+To improve our move-selection logic in PawnsBoard, we implemented several strategies using the Strategy and Composite design patterns. In addition to our baseline strategies, we added two new ones for extra credit. Below is a summary of each strategy and their roles in our system:
 
+1. Basic Strategies
+FillFirstStrategy
+Purpose:
+This strategy scans through the current player's hand and then through the board (in row-major order) to find the first valid cell where a card can be placed. If a valid move is found, it returns that move; otherwise, it passes.
+
+Location:
+cs3500.pawnsboard.Strategy.FillFirstStrategy.java
+
+Notes:
+
+It performs basic legality checks (e.g., cell must have enough pawns, belong to the current player, and be empty of cards).
+
+It’s very straightforward and tends to pick the first available move.
+
+MaxRowScoreStrategy
+Purpose:
+This strategy scans the board row by row to identify a row where the current player is losing or tied with the opponent. It then tries to find a card placement that will improve that row's score, choosing a move that increases the player’s row-score. If no such move exists, it passes.
+
+Location:
+cs3500.pawnsboard.Strategy.MaxRowScoreStrategy.java
+
+Notes:
+
+It is more selective than FillFirstStrategy and aims to win a specific row.
+
+For simplicity, it assumes that any card with a positive value is helpful in increasing the score.
+
+Move
+Purpose:
+The Move class encapsulates a move in the game. It represents either a pass or a placement move (with the hand index, row, and column where the card should be played).
+
+Location:
+cs3500.pawnsboard.Strategy.Move.java
+
+Notes:
+
+It provides static factory methods passMove() and placeMove(...) for creating moves.
+
+Our tests (see MoveTest.java) ensure that the move objects correctly represent pass moves and placement moves.
+
+2. Extra Credit Strategies
+ControlBoardStrategy
+Purpose:
+This strategy examines every valid move by simulating the move on a copy of the current board. It then evaluates the move based on “board control” – the number of cells that end up with a card owned by the current player. The move yielding the highest control is selected.
+
+Location:
+cs3500.pawnsboard.Strategy.ControlBoardStrategy.java
+
+Key Features:
+
+Uses a deep copy of the model (via copyModel()) so that simulation does not affect the original state.
+
+Iterates through all cards and board cells to check valid moves.
+
+Implements tie-breaking by selecting the move encountered first in row-major order.
+
+Testing:
+The tests in ControlBoardStrategyTest.java simulate various board states and verify that the strategy picks the move that maximizes board control.
+
+CompositeStrategy
+Purpose:
+This strategy lets us combine multiple strategies into one cohesive move-selection process. It accepts a list of strategies and, when invoked, iterates through them until one returns a non-pass move. If all strategies return pass, then it passes.
+
+Location:
+cs3500.pawnsboard.Strategy.CompositeStrategy.java
+
+Key Features:
+
+Supports dynamic composition of simpler strategies (e.g., you might chain ControlBoardStrategy with FillFirstStrategy).
+
+Facilitates flexibility; you can easily rearrange or extend the composite by adding new strategies.
+
+Testing:
+The tests in CompositeStrategyTest.java create stub strategies (one that always passes and one that returns a placement move) to verify that the composite returns the expected move according to its ordering.
+
+3. Overall Benefits and Testing
+Modularity:
+Each strategy is implemented as a self-contained class conforming to our Strategy interface, making it easy to test and maintain.
+
+Flexibility:
+With CompositeStrategy, we can easily recombine strategies to form more sophisticated decision logic without rewriting existing code.
+
+Testability:
+We have written unit tests for each strategy (see FillFirstStrategyTest.java, MaxRowScoreStrategyTest.java, ControlBoardStrategyTest.java, and CompositeStrategyTest.java) that simulate various board states and verify correct move selection.
+
+Documentation:
+This README section, along with inline comments in the code, details the design and expected behavior of each strategy.
+
+By implementing these extra strategies and providing comprehensive tests, our project now demonstrates an advanced use of the Strategy and Composite patterns. This allows for flexible move selection and sets a solid foundation for further improvements in our game’s AI.
 
