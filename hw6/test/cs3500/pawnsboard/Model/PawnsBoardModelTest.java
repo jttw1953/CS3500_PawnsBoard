@@ -13,6 +13,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Tests for the PawnsBoardModel class.
+ * Covers game mechanics such as placing cards, applying influence, turn handling,
+ * scoring, out-of-bounds validation, and model copying.
+ */
 public class PawnsBoardModelTest {
 
   private List<Card> smallDeck;
@@ -92,7 +97,8 @@ public class PawnsBoardModelTest {
     // Our influence shape tries to add pawns to (0,1), (0,-1), (1,0), (-1,0) etc.
     // But negative or out-of-bounds is ignored.
     // We do expect (0,1) to become a RED pawn if it's in bounds,
-    // for row=0, col=1 => previously empty? Actually, it might be empty or also have blue pawns if it's the last col.
+    // for row=0, col=1 => previously empty? Actually, it might be empty or 
+    // also have blue pawns if it's the last col.
     // In a 3x5 board, (0,1) was empty => should now have 1 red pawn.
     ReadOnlyCell influencedCell = model.getCellState(0, 1);
     assertEquals(CellType.PAWNS, influencedCell.type);
@@ -105,7 +111,8 @@ public class PawnsBoardModelTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testPlaceCardNotEnoughPawns() {
-    // If we try to place a cost=1 card in a cell that belongs to BLUE, or a cell that has 0 pawns, it should fail.
+    // If we try to place a cost=1 card in a cell that belongs to BLUE, or a cell that has
+    // 0 pawns, it should fail.
     // Let’s try to place a card at (0,4) right away => that is BLUE's cell (with 1 pawn).
     // But the current player is RED => not owner => should fail.
     model.placeCard(0, 0, 4);
@@ -159,7 +166,8 @@ public class PawnsBoardModelTest {
     model.pass(); // switch => RED
     model.pass(); // switch => BLUE, pass again => ??? Actually let's make BLUE place something…
 
-    // Actually let's have BLUE also place a card in row=0 => also value=2 => tie in that row => 0 points
+    // Actually let's have BLUE also place a card in row=0 => 
+    // also value=2 => tie in that row => 0 points
     // But if we skip that, then row0 => RED=2, BLUE=0 => Red wins row0 => red total=2
     // row1 => tie(0,0), row2 => tie(0,0)
     // final => red=2, blue=0 => red is winner
@@ -185,7 +193,8 @@ public class PawnsBoardModelTest {
 
     // That cell becomes a BLUE card. Check influence is mirrored horizontally.
     // The card's normal influence from the center (2,2) => (2,3), (2,1), etc.
-    // But for BLUE, we flip column deltas => effectively "I" squares go to the left of (0,4) if in range.
+    // But for BLUE, we flip column deltas => effectively "I" squares go to 
+    // the left of (0,4) if in range.
 
     // For example, the square (2,3) in the influence grid (row=2 col=3 => dc=1)
     // becomes column offset = -1 from center for BLUE => (0,4 - 1) => (0,3).
@@ -200,8 +209,10 @@ public class PawnsBoardModelTest {
   // Test: Card influence converts opponent pawn ownership
   @Test
   public void testCardInfluenceConvertsOwnership() {
-    // Create a custom influence grid that will influence a cell to the right of the card's placement.
-    // The grid has 'C' at (2,2) and an 'I' at (2,3) so that when the card is placed at (1,3),
+    // Create a custom influence grid that will influence a cell to the 
+    // right of the card's placement.
+    // The grid has 'C' at (2,2) and an 'I' at (2,3) so that when the card 
+    // is placed at (1,3),
     // it will influence the board cell at (1,4).
     char[][] customGrid = {
             {'X', 'X', 'X', 'X', 'X'},
@@ -219,7 +230,8 @@ public class PawnsBoardModelTest {
     List<Card> blueDeck = new ArrayList<>();
     blueDeck.add(customCard);
 
-    // Instantiate a board with 3 rows x 5 columns and initial hand size 0 so we can manually add cards.
+    // Instantiate a board with 3 rows x 5 columns and initial hand size 0 
+    // so we can manually add cards.
     PawnsBoardModel model = new PawnsBoardModel(3, 5, redDeck, blueDeck, 0);
 
     // By default, the leftmost column has Red pawns and the rightmost column has Blue pawns.
@@ -228,7 +240,8 @@ public class PawnsBoardModelTest {
 
     // Confirm that cell (1,4) (in the last column) initially has Blue's pawn.
     ReadOnlyCell before = model.getCellState(1, 4);
-    assertEquals("Before placement, cell (1,4) should be owned by BLUE", PlayerColor.BLUE, before.owner);
+    assertEquals("Before placement, cell (1,4) should be owned by BLUE",
+                 PlayerColor.BLUE, before.owner);
 
     // Add the custom card to Red's hand so that it can be played.
     // (Accessing redState directly is acceptable in tests within the same package.)
@@ -240,7 +253,8 @@ public class PawnsBoardModelTest {
 
     // After the move, cell (1,4) should now have its ownership converted to Red.
     ReadOnlyCell after = model.getCellState(1, 4);
-    assertEquals("After placement, cell (1,4) should be owned by RED", PlayerColor.RED, after.owner);
+    assertEquals("After placement, cell (1,4) should be owned by RED", 
+                 PlayerColor.RED, after.owner);
   }
 
   // Test: Out-of-bounds card placement is prevented
@@ -287,7 +301,7 @@ public class PawnsBoardModelTest {
   // Test: Model switches turns so that a player cannot play out-of-turn
   @Test
   public void testTurnSwitchingAndOutOfTurnPrevention() {
-    // Create a simple influence grid for our test card (no influence needed for this test)
+    // Create a simple influence grid for our test card 
     char[][] grid = {
             {'X', 'X', 'X', 'X', 'X'},
             {'X', 'X', 'X', 'X', 'X'},
@@ -308,7 +322,8 @@ public class PawnsBoardModelTest {
     PawnsBoardModel model = new PawnsBoardModel(3, 5, redDeck, blueDeck, 0);
 
     // Initially, current player should be RED.
-    assertEquals("Initial current player should be RED", PlayerColor.RED, model.getCurrentPlayer());
+    assertEquals("Initial current player should be RED", PlayerColor.RED,
+                 model.getCurrentPlayer());
 
     // For a valid move, ensure cell (1,0) is set to have RED's pawn.
     model.board[1][0].setPawns(PlayerColor.RED, 1);
@@ -320,9 +335,11 @@ public class PawnsBoardModelTest {
     model.placeCard(0, 1, 0);
 
     // After a valid move, the turn should switch to BLUE.
-    assertEquals("After RED's move, current player should be BLUE", PlayerColor.BLUE, model.getCurrentPlayer());
+    assertEquals("After RED's move, current player should be BLUE", 
+                 PlayerColor.BLUE, model.getCurrentPlayer());
 
-    // Attempt to have Red (by using Red's hand) place another card on a cell that belongs to RED.
+    // Attempt to have Red (by using Red's hand) place another 
+    // card on a cell that belongs to RED.
     // Since it's now BLUE's turn, this should throw an exception.
     model.redState.getHand().add(testCard);
     assertThrows(IllegalArgumentException.class, () -> {
@@ -420,9 +437,12 @@ public class PawnsBoardModelTest {
     // Verify that a specific cell's state is the same in both original and copy.
     ReadOnlyCell originalCell = original.getCellState(1, 0);
     ReadOnlyCell copyCell = copy.getCellState(1, 0);
-    assertEquals("Copied model should have the same cell type", originalCell.type, copyCell.type);
-    assertEquals("Copied model should have the same owner", originalCell.owner, copyCell.owner);
-    assertEquals("Copied model should have the same pawn count", originalCell.pawnCount, copyCell.pawnCount);
+    assertEquals("Copied model should have the same cell type",
+                 originalCell.type, copyCell.type);
+    assertEquals("Copied model should have the same owner",
+                 originalCell.owner, copyCell.owner);
+    assertEquals("Copied model should have the same pawn count",
+                 originalCell.pawnCount, copyCell.pawnCount);
 
     // Modify the original: change cell (1,1) to have 2 RED pawns.
     original.board[1][1].setPawns(PlayerColor.RED, 2);
