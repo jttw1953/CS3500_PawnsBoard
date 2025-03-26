@@ -6,21 +6,21 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EdgeCaseTest {
+  // A simple 5x5 influence grid (with center 'C')
+  private final char[][] influenceArr = {
+          {'X', 'X', 'I', 'X', 'X'},
+          {'X', 'X', 'I', 'X', 'X'},
+          {'I', 'I', 'C', 'I', 'I'},
+          {'X', 'X', 'I', 'X', 'X'},
+          {'X', 'X', 'I', 'X', 'X'}
+  };
   private List<Card> deck;
   private PawnsBoardModel model;
   private InfluenceGrid ig;
-
-  // A simple 5x5 influence grid (with center 'C')
-  private final char[][] influenceArr = {
-      {'X','X','I','X','X'},
-      {'X','X','I','X','X'},
-      {'I','I','C','I','I'},
-      {'X','X','I','X','X'},
-      {'X','X','I','X','X'}
-  };
 
   @Before
   public void setup() {

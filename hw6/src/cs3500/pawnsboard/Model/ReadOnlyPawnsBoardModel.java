@@ -3,19 +3,25 @@ package cs3500.pawnsboard.Model;
 import java.util.List;
 
 public interface ReadOnlyPawnsBoardModel {
-    int getRows();
-    int getCols();
-    PlayerColor getCurrentPlayer();
+  int getRows();
 
-    boolean isGameOver();
-    PlayerColor getWinner();
+  int getCols();
 
-    ReadOnlyCell getCellState(int row, int col);
-    List<Card> getCurrentPlayerHand();
+  PlayerColor getCurrentPlayer();
 
-    int getRowScore(int row, PlayerColor color);
-    int getTotalScore(PlayerColor color);
-    boolean canPlaceCard(int handIndex, int row, int col);
+  boolean isGameOver();
 
-    int getDeckSize(PlayerColor color);
+  PlayerColor getWinner();
+
+  ReadOnlyCell getCellState(int row, int col);
+
+  List<Card> getCurrentPlayerHand();
+
+  int getRowScore(int row, PlayerColor color);
+
+  int getTotalScore(PlayerColor color);
+
+  boolean canPlaceCard(int handIndex, int row, int col);
+
+  int getDeckSize(PlayerColor color);
 }
