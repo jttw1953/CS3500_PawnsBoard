@@ -1,0 +1,7 @@
+getRows()
+getCols()
+getCurrentPlayerHand()
+getRowScore(0, RED)
+getRowScore(0, BLUE)
+getCellState(0,0)
+canPlaceCard(0,0,0)
