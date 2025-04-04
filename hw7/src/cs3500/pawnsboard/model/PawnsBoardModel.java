@@ -13,14 +13,14 @@ public class PawnsBoardModel implements IPawnsBoardModel {
   private final int cols;
 
   // Track the two players
-  final PlayerState redState;
+  protected final PlayerState redState;
   private final PlayerState blueState;
 
   // Current player's color
   private PlayerColor currentPlayer;
 
   // The board, rows x cols
-  final Cell[][] board;
+  protected final Cell[][] board;
 
   // For detecting game end (two consecutive passes)
   private boolean lastWasPass;
