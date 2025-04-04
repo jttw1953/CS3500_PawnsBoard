@@ -455,5 +455,19 @@ public class PawnsBoardModelTest {
             modifiedOriginal.pawnCount, copyAfterModification.pawnCount);
   }
 
+  @Test
+  public void testGetDeckSize() {
+    // Our smallDeck is initialized with 4 cards.
+    // Since the initial hand size is set to 2, each player's deck should have 2 cards remaining.
+    assertEquals("Red's deck should have 2 cards remaining", 2, model.getDeckSize(PlayerColor.RED));
+    assertEquals("Blue's deck should have 2 cards remaining", 2, model.getDeckSize(PlayerColor.BLUE));
+
+    // Now, if we draw a card for the current player (RED initially), its deck should decrease.
+    model.drawCardIfPossible(); // Current player is RED.
+    // Now, Red's deck should have 1 card, while Blue's remains at 2.
+    assertEquals("After drawing, Red's deck should have 1 card remaining", 1, model.getDeckSize(PlayerColor.RED));
+    assertEquals("Blue's deck should still have 2 cards remaining", 2, model.getDeckSize(PlayerColor.BLUE));
+  }
+
 
 }
