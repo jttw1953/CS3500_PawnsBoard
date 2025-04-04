@@ -1,17 +1,12 @@
 package cs3500.pawnsboard.view;
 
-import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
-import cs3500.pawnsboard.model.Card;
-import cs3500.pawnsboard.model.PlayerColor;
-import cs3500.pawnsboard.model.InfluenceGrid;
+import cs3500.pawnsboard.Model.ReadOnlyPawnsBoardModel;
+import cs3500.pawnsboard.Model.Card;
+import cs3500.pawnsboard.Model.PlayerColor;
+import cs3500.pawnsboard.Model.InfluenceGrid;
 
 import javax.swing.JPanel;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -20,153 +15,144 @@ import java.util.List;
  * A panel that displays the current player's hand of cards in a row.
  */
 public class HandPanel extends JPanel {
-  private final ReadOnlyPawnsBoardModel model;
-  private PawnsBoardSwingView parentView;
+    private final ReadOnlyPawnsBoardModel model;
+    private PawnsBoardSwingView parentView;
 
-  // Track which card index is selected
-  private int selectedCardIndex = -1;
+    // Track which card index is selected
+    private int selectedCardIndex = -1;
 
-  /**
-   * Constructs a new HandPanel, a visual component for displaying
-   * the current player's hand of cards in the GUI view of the Pawns Board game.
-   * The panel lays out the player's cards horizontally across the bottom of the window.
-   * When a user clicks on a card, it becomes selected or deselected (if already selected),
-   * and the controller is notified via onCardClicked(cardIndex).
-   * The panel automatically resizes to fit the number of cards, and has a fixed
-   * preferred height for consistent layout within the window.
-   *
-   * @param model the read-only view of the game model used to render the current player's hand
-   * @throws NullPointerException if the model is null
-   */
-  public HandPanel(ReadOnlyPawnsBoardModel model) {
-    super();
-    this.model = model;
-    this.setBackground(Color.WHITE);
+    public HandPanel(ReadOnlyPawnsBoardModel model) {
+        super();
+        this.model = model;
+        this.setBackground(Color.WHITE);
 
-    // Force a decent height so it’s visible
-    this.setPreferredSize(new Dimension(800, 150));
+        // Force a decent height so it’s visible
+        this.setPreferredSize(new Dimension(800, 150));
 
-    this.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                List<Card> hand = model.getCurrentPlayerHand();
+                if (hand.isEmpty()) {
+                    return;
+                }
+
+                // We'll assume each card is displayed in a rectangle.
+                int panelWidth = getWidth();
+                int panelHeight = getHeight();
+
+                // Distribute the cards horizontally across the panel
+                int cardWidth = (panelWidth / Math.max(hand.size(), 1));
+                int cardHeight = panelHeight - 10; // a little padding
+
+                int cardIndex = e.getX() / cardWidth;
+
+                if (cardIndex >= 0 && cardIndex < hand.size()) {
+                    // if it's already selected, deselect it
+                    if (cardIndex == selectedCardIndex) {
+                        selectedCardIndex = -1;
+                    } else {
+                        selectedCardIndex = cardIndex;
+                    }
+
+                    // Inform the controller
+                    if (parentView != null && parentView.getController() != null) {
+                        parentView.getController().onCardClicked(cardIndex);
+                    }
+                    repaint();
+                }
+            }
+        });
+    }
+
+    public void setView(PawnsBoardSwingView view) {
+        this.parentView = view;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Draw the current player's hand
         List<Card> hand = model.getCurrentPlayerHand();
         if (hand.isEmpty()) {
-          return;
+            g2.setColor(Color.BLACK);
+            g2.drawString("No cards in hand", 10, 20);
+            return;
         }
 
-        // We'll assume each card is displayed in a rectangle.
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
+        int panelW = getWidth();
+        int panelH = getHeight();
+        int cardCount = hand.size();
 
-        // Distribute the cards horizontally across the panel
-        int cardWidth = (panelWidth / Math.max(hand.size(), 1));
-        int cardHeight = panelHeight - 10; // a little padding
+        int cardW = panelW / cardCount;
+        int cardH = panelH - 10; // some vertical padding
 
-        int cardIndex = e.getX() / cardWidth;
+        for (int i = 0; i < cardCount; i++) {
+            int x = i * cardW;
+            int y = 0;
 
-        if (cardIndex >= 0 && cardIndex < hand.size()) {
-          // if it's already selected, deselect it
-          if (cardIndex == selectedCardIndex) {
-            selectedCardIndex = -1;
-          } else {
-            selectedCardIndex = cardIndex;
-          }
-
-          // Inform the controller
-          if (parentView != null && parentView.getController() != null) {
-            parentView.getController().onCardClicked(cardIndex);
-          }
-          repaint();
-        }
-      }
-    });
-  }
-
-  public void setView(PawnsBoardSwingView view) {
-    this.parentView = view;
-  }
-
-  @Override
-  protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Graphics2D g2 = (Graphics2D) g;
-
-    // Draw the current player's hand
-    List<Card> hand = model.getCurrentPlayerHand();
-    if (hand.isEmpty()) {
-      g2.setColor(Color.BLACK);
-      g2.drawString("No cards in hand", 10, 20);
-      return;
-    }
-
-    int panelW = getWidth();
-    int panelH = getHeight();
-    int cardCount = hand.size();
-
-    int cardW = panelW / cardCount;
-    int cardH = panelH - 10; // some vertical padding
-
-    for (int i = 0; i < cardCount; i++) {
-      int x = i * cardW;
-      int y = 0;
-
-      // Highlight if selected
-      if (i == selectedCardIndex) {
-        g2.setColor(Color.CYAN);
-        g2.fillRect(x, y, cardW, cardH);
-      }
-
-      // Outline the card
-      g2.setColor(Color.BLACK);
-      g2.drawRect(x, y, cardW, cardH);
-
-      // Fill background based on current player color
-      PlayerColor current = model.getCurrentPlayer();
-      if (current == PlayerColor.RED) {
-        g2.setColor(new Color(255, 180, 180)); // light red
-      } else {
-        g2.setColor(new Color(180, 180, 255)); // light blue
-      }
-      g2.fillRect(x + 1, y + 1, cardW - 2, cardH - 2);
-
-      // ------------------- NEW: Draw the 5x5 influence grid -------------------
-      Card c = hand.get(i);
-      InfluenceGrid ig = c.getInfluenceGrid();  // Assumes Card has a getInfluenceGrid() method
-      if (ig != null) {
-        int subW = cardW / 5;
-        int subH = cardH / 5;
-        for (int row = 0; row < 5; row++) {
-          for (int col = 0; col < 5; col++) {
-            char cellVal = ig.getCell(row, col);
-            Color fillColor;
-            if (cellVal == 'C') {
-              fillColor = Color.BLACK; // center
-            } else if (cellVal == 'I') {
-              fillColor = Color.ORANGE; // influenced cell
+            // Draw background based on current player color
+            PlayerColor current = model.getCurrentPlayer();
+            if (current == PlayerColor.RED) {
+                g2.setColor(new Color(255, 180, 180)); // light red
             } else {
-              fillColor = Color.WHITE;  // no influence (or 'X')
+                g2.setColor(new Color(180, 180, 255)); // light blue
             }
-            int subX = x + col * subW;
-            int subY = y + row * subH;
-            g2.setColor(fillColor);
-            g2.fillRect(subX, subY, subW, subH);
-            // Draw border around each sub-cell for clarity
-            g2.setColor(Color.GRAY);
-            g2.drawRect(subX, subY, subW, subH);
-          }
-        }
-      }
-      // -------------------------------------------------------------------------
+            g2.fillRect(x, y, cardW, cardH);
 
-      // Draw card info text near the bottom center of the card
-      g2.setColor(Color.BLACK);
-      String display = c.getName() + " (cost=" + c.getCost() + ", val=" + c.getValue() + ")";
-      FontMetrics fm = g2.getFontMetrics();
-      int textWidth = fm.stringWidth(display);
-      int textHeight = fm.getAscent();
-      int textX = x + (cardW - textWidth) / 2;
-      int textY = y + cardH - (textHeight / 2);
-      g2.drawString(display, textX, textY);
+            // Draw the outline
+            g2.setColor(Color.BLACK);
+            g2.drawRect(x, y, cardW, cardH);
+
+            // Draw the 5x5 influence grid
+            Card c = hand.get(i);
+            InfluenceGrid ig = c.getInfluenceGrid();  // Assumes Card has a getInfluenceGrid() method
+            if (ig != null) {
+                int subW = cardW / 5;
+                int subH = cardH / 5;
+                for (int row = 0; row < 5; row++) {
+                    for (int col = 0; col < 5; col++) {
+                        char cellVal = ig.getCell(row, col);
+                        Color fillColor;
+                        if (cellVal == 'C') {
+                            fillColor = Color.BLACK; // center
+                        } else if (cellVal == 'I') {
+                            fillColor = Color.ORANGE; // influenced cell
+                        } else {
+                            fillColor = Color.WHITE;  // no influence (or 'X')
+                        }
+                        int subX = x + col * subW;
+                        int subY = y + row * subH;
+                        g2.setColor(fillColor);
+                        g2.fillRect(subX, subY, subW, subH);
+                        // Draw border around each sub-cell for clarity
+                        g2.setColor(Color.GRAY);
+                        g2.drawRect(subX, subY, subW, subH);
+                    }
+                }
+            }
+
+            // Draw card info text near the bottom center of the card
+            g2.setColor(Color.BLACK);
+            String display = c.getName() + " (cost=" + c.getCost() + ", val=" + c.getValue() + ")";
+            FontMetrics fm = g2.getFontMetrics();
+            int textWidth = fm.stringWidth(display);
+            int textHeight = fm.getAscent();
+            int textX = x + (cardW - textWidth) / 2;
+            int textY = y + cardH - (textHeight / 2);
+            g2.drawString(display, textX, textY);
+
+            // Now, if this card is selected, draw a thick cyan border over it.
+            if (i == selectedCardIndex) {
+                g2.setColor(Color.CYAN);
+                g2.setStroke(new java.awt.BasicStroke(3));
+                g2.drawRect(x, y, cardW, cardH);
+                // Reset stroke to default (optional)
+                g2.setStroke(new java.awt.BasicStroke(1));
+            }
+        }
     }
-  }
+
 }
