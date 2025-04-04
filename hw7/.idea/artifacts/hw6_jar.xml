@@ -2,7 +2,7 @@
   <artifact type="jar" build-on-make="true" name="hw6:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/hw6_jar</output-path>
     <root id="archive" name="hw6.jar">
-      <element id="module-output" name="hw6" />
+      <element id="module-output" name="hw7" />
     </root>
   </artifact>
 </component>

@@ -1,8 +1,9 @@
-package cs3500.pawnsboard.Controller;
+package cs3500.pawnsboard.controller;
 
-import cs3500.pawnsboard.Model.IPawnsBoardModel;
-import cs3500.pawnsboard.Model.PlayerColor;
-import cs3500.pawnsboard.View.IPawnsBoardGuiView;
+import cs3500.pawnsboard.model.IPawnsBoardModel;
+import cs3500.pawnsboard.model.PlayerColor;
+import cs3500.pawnsboard.view.IPawnsBoardGuiView;
+import cs3500.pawnsboard.controller.IPawnsBoardController;
 
 /**
  * A real controller that handles user input and enforces
