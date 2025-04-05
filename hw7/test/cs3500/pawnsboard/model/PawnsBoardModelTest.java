@@ -241,7 +241,7 @@ public class PawnsBoardModelTest {
     // Confirm that cell (1,4) (in the last column) initially has Blue's pawn.
     ReadOnlyCell before = model.getCellState(1, 4);
     assertEquals("Before placement, cell (1,4) should be owned by BLUE",
-                 PlayerColor.BLUE, before.owner);
+            PlayerColor.BLUE, before.owner);
 
     // Add the custom card to Red's hand so that it can be played.
     // (Accessing redState directly is acceptable in tests within the same package.)
@@ -253,8 +253,8 @@ public class PawnsBoardModelTest {
 
     // After the move, cell (1,4) should now have its ownership converted to Red.
     ReadOnlyCell after = model.getCellState(1, 4);
-    assertEquals("After placement, cell (1,4) should be owned by RED", 
-                 PlayerColor.RED, after.owner);
+    assertEquals("After placement, cell (1,4) should be owned by RED",
+            PlayerColor.RED, after.owner);
   }
 
   // Test: Out-of-bounds card placement is prevented
@@ -323,7 +323,7 @@ public class PawnsBoardModelTest {
 
     // Initially, current player should be RED.
     assertEquals("Initial current player should be RED", PlayerColor.RED,
-                 model.getCurrentPlayer());
+            model.getCurrentPlayer());
 
     // For a valid move, ensure cell (1,0) is set to have RED's pawn.
     model.board[1][0].setPawns(PlayerColor.RED, 1);
@@ -335,8 +335,8 @@ public class PawnsBoardModelTest {
     model.placeCard(0, 1, 0);
 
     // After a valid move, the turn should switch to BLUE.
-    assertEquals("After RED's move, current player should be BLUE", 
-                 PlayerColor.BLUE, model.getCurrentPlayer());
+    assertEquals("After RED's move, current player should be BLUE",
+            PlayerColor.BLUE, model.getCurrentPlayer());
 
     // Attempt to have Red (by using Red's hand) place another 
     // card on a cell that belongs to RED.
@@ -438,11 +438,11 @@ public class PawnsBoardModelTest {
     ReadOnlyCell originalCell = original.getCellState(1, 0);
     ReadOnlyCell copyCell = copy.getCellState(1, 0);
     assertEquals("Copied model should have the same cell type",
-                 originalCell.type, copyCell.type);
+            originalCell.type, copyCell.type);
     assertEquals("Copied model should have the same owner",
-                 originalCell.owner, copyCell.owner);
+            originalCell.owner, copyCell.owner);
     assertEquals("Copied model should have the same pawn count",
-                 originalCell.pawnCount, copyCell.pawnCount);
+            originalCell.pawnCount, copyCell.pawnCount);
 
     // Modify the original: change cell (1,1) to have 2 RED pawns.
     original.board[1][1].setPawns(PlayerColor.RED, 2);
@@ -459,14 +459,18 @@ public class PawnsBoardModelTest {
   public void testGetDeckSize() {
     // Our smallDeck is initialized with 4 cards.
     // Since the initial hand size is set to 2, each player's deck should have 2 cards remaining.
-    assertEquals("Red's deck should have 2 cards remaining", 2, model.getDeckSize(PlayerColor.RED));
-    assertEquals("Blue's deck should have 2 cards remaining", 2, model.getDeckSize(PlayerColor.BLUE));
+    assertEquals("Red's deck should have 2 cards remaining",
+            2, model.getDeckSize(PlayerColor.RED));
+    assertEquals("Blue's deck should have 2 cards remaining",
+            2, model.getDeckSize(PlayerColor.BLUE));
 
     // Now, if we draw a card for the current player (RED initially), its deck should decrease.
     model.drawCardIfPossible(); // Current player is RED.
     // Now, Red's deck should have 1 card, while Blue's remains at 2.
-    assertEquals("After drawing, Red's deck should have 1 card remaining", 1, model.getDeckSize(PlayerColor.RED));
-    assertEquals("Blue's deck should still have 2 cards remaining", 2, model.getDeckSize(PlayerColor.BLUE));
+    assertEquals("After drawing, Red's deck should have 1 card remaining",
+            1, model.getDeckSize(PlayerColor.RED));
+    assertEquals("Blue's deck should still have 2 cards remaining",
+            2, model.getDeckSize(PlayerColor.BLUE));
   }
 
 

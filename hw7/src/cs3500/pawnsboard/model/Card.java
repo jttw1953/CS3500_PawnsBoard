@@ -30,18 +30,34 @@ public class Card {
     this.grid = grid;
   }
 
+  /**
+   * Gets name of a card.
+   * @return name of this card
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Gets the cost of a card.
+   * @return cost of this card
+   */
   public int getCost() {
     return cost;
   }
 
+  /**
+   * Gets the value of a card.
+   * @return value of this card
+   */
   public int getValue() {
     return value;
   }
 
+  /**
+   * Gets the influence grid of the card.
+   * @return influence grid of this card
+   */
   public InfluenceGrid getInfluenceGrid() {
     return grid;
   }

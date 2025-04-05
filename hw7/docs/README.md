@@ -204,3 +204,43 @@ This README section, along with inline comments in the code, details the design 
 
 By implementing these extra strategies and providing comprehensive tests, our project now demonstrates an advanced use of the Strategy and Composite patterns. This allows for flexible move selection and sets a solid foundation for further improvements in our game’s AI.
 
+## Changes for Part 3
+
+This phase introduced full game interactivity by connecting the model and view through a real controller. The game is now fully playable via mouse clicks and keyboard input, with turn enforcement, user input handling, and move validation.
+
+### Summary of Key Changes
+
+- Added a complete controller: `PawnsBoardController`
+- Created a controller interface: `IPawnsBoardController`
+- Modularized GUI by separating card-handling into a new `HandPanel` class
+- Updated the GUI view to enforce turn-based logic and support selection behavior
+- Refactored the view to better follow MVC design principles
+
+### New Classes
+
+#### `PawnsBoardController.java`
+- Implements `IPawnsBoardController`
+- Validates and applies user actions (e.g., cell click, card select, confirm, pass)
+- Refreshes the view after each action
+- Prevents illegal moves and enforces correct turn order
+
+#### `IPawnsBoardController.java`
+- Interface used by the GUI to communicate player actions to the controller
+- Declares methods:
+  - `onCellClicked(int row, int col)`
+  - `onCardClicked(int cardIndex)`
+  - `onPass()`
+  - `onConfirm()`
+
+#### `HandPanel.java`
+- New visual component for rendering the player's hand
+- Detects clicks to select or deselect cards
+- Highlights selected card and notifies controller of actions
+- Automatically adjusts layout based on number of cards
+
+### Design Updates
+
+- Turn logic is now enforced in the controller
+- View and controller are more cleanly separated
+- The model is updated only through validated controller actions
+- GUI feedback is tied to controller decisions, improving user experience
