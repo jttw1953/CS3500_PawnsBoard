@@ -1,72 +1,93 @@
 package cs3500.pawnsboard;
 
+import cs3500.pawnsboard.Controller.IPawnsBoardController;
+import cs3500.pawnsboard.Controller.PawnsBoardController;
+import cs3500.pawnsboard.Model.Card;
+import cs3500.pawnsboard.Model.IPawnsBoardModel;
+import cs3500.pawnsboard.Model.PawnsBoardModel;
+import cs3500.pawnsboard.Model.PlayerColor;
+import cs3500.pawnsboard.Model.ReadOnlyPawnsBoardModel;
+import cs3500.pawnsboard.Util.DeckReader;
+import cs3500.pawnsboard.View.PawnsBoardSwingView;
+
+// -- Provider imports --
+import cs3500.pawnsboard.provider.model.ProviderModelAdapter;
+import cs3500.pawnsboard.provider.controller.ProviderControllerAdapter;
+import cs3500.pawnsboard.provider.view.ProviderViewImpl;
+
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import cs3500.pawnsboard.controller.IPawnsBoardController;
-import cs3500.pawnsboard.controller.PawnsBoardController;
-import cs3500.pawnsboard.model.Card;
-import cs3500.pawnsboard.model.IPawnsBoardModel;
-import cs3500.pawnsboard.model.PawnsBoardModel;
-import cs3500.pawnsboard.model.PlayerColor;
-import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
-import cs3500.pawnsboard.util.DeckReader;
-import cs3500.pawnsboard.view.PawnsBoardSwingView;
-
-/**
- * Main class for a fully playable two-player Pawns Board game.
- * This version uses one deck configuration file for both players.
- */
 public class PawnsBoardGame {
-  /**
-   * The main entry point for a demonstration of the PawnsBoard game.
-   * This method initializes the game model, loads the deck configuration,
-   * and runs a simple demonstration of gameplay.
-   * @param args command-line arguments
-   */
-  public static void main(String[] args) {
-    // Path to your single deck config file in the docs directory.
-    String deckPath = "docs/deck.config";
+    public static void main(String[] args) {
+        // Optionally parse arguments (deck paths, player types, etc.)
+        // For now, we’ll just have a simple path to a deck config:
+        String deckPath = "docs/deck.config";
 
-    try {
-      // Load the deck from file.
-      List<Card> deck = DeckReader.readDeckFromFile(deckPath);
+        // Decide whether to use provider’s view for Player 2 (optional).
+        // e.g. run:  java -jar pawnsboard.jar --provider2
+        boolean useProviderForBlue = (args.length > 0 && args[0].equals("--provider2"));
 
-      // Create the model.
-      // Here we create a board with 5 rows and 7 columns (columns must be odd)
-      // and set the initial hand size to 5.
-      IPawnsBoardModel model = new PawnsBoardModel(
-              5,          // rows
-              7,          // columns
-              deck,       // red deck (using the same deck for both players)
-              deck,       // blue deck
-              5           // initial hand size
-      );
+        try {
+            // 1) Read the deck
+            List<Card> deck = DeckReader.readDeckFromFile(deckPath);
 
-      // If your view requires a read-only version, wrap the model accordingly.
-      ReadOnlyPawnsBoardModel roModel = model;
+            // 2) Construct our real model
+            IPawnsBoardModel model = new PawnsBoardModel(
+                    5,  // rows
+                    7,  // cols
+                    deck, // red deck
+                    deck, // blue deck
+                    5   // initial hand size
+            );
 
-      // Create two views (windows) for each player.
-      PawnsBoardSwingView redView = new PawnsBoardSwingView(roModel);
-      PawnsBoardSwingView blueView = new PawnsBoardSwingView(roModel);
+            // We'll use this read-only reference for our own view
+            ReadOnlyPawnsBoardModel roModel = model;
 
-      // Create two controllers, one for each player.
-      IPawnsBoardController redController =
-              new PawnsBoardController(model, redView, PlayerColor.RED);
-      IPawnsBoardController blueController =
-              new PawnsBoardController(model, blueView, PlayerColor.BLUE);
+            // --- Player 1 (RED) uses our own SwingView + our own controller ---
+            PawnsBoardSwingView redView = new PawnsBoardSwingView(roModel);
+            IPawnsBoardController redController =
+                    new PawnsBoardController(model, redView, PlayerColor.RED);
+            redView.setController(redController);
+            redView.makeVisible();
 
-      // Link each view with its controller.
-      redView.setController(redController);
-      blueView.setController(blueController);
+            if (!useProviderForBlue) {
+                // -- Player 2 uses YOUR old view + controller --
 
-      // Make both windows visible.
-      redView.makeVisible();
-      blueView.makeVisible();
+                PawnsBoardSwingView blueView = new PawnsBoardSwingView(roModel);
+                IPawnsBoardController blueController =
+                        new PawnsBoardController(model, blueView, PlayerColor.BLUE);
+                blueView.setController(blueController);
+                blueView.makeVisible();
 
-    } catch (FileNotFoundException e) {
-      System.err.println("Could not load deck file: " + e.getMessage());
-      System.exit(1);
+            } else {
+                // -- Player 2 uses PROVIDER’s code --
+
+                // 1) providerModelAdapter
+                ProviderModelAdapter providerModelAdapter =
+                        new ProviderModelAdapter((PawnsBoardModel) model);
+
+                // 2) The provider’s view (or your stub if you had to create one)
+                ProviderViewImpl providerBlueView =
+                        new ProviderViewImpl(providerModelAdapter);
+
+                // 3) Your real controller for Player 2
+                IPawnsBoardController myBlueController =
+                        new PawnsBoardController(model, null, PlayerColor.BLUE);
+
+                // 4) Wrap it so the provider’s view can call it
+                ProviderControllerAdapter providerBlueController =
+                        new ProviderControllerAdapter(myBlueController);
+
+                // 5) Link them
+                providerBlueView.setController(providerBlueController);
+                providerBlueView.makeVisible();
+            }
+
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Could not load deck file: " + e.getMessage());
+            System.exit(1);
+        }
     }
-  }
 }
