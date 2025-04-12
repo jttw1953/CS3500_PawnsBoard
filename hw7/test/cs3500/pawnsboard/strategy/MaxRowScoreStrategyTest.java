@@ -8,6 +8,7 @@ import java.util.List;
 
 import cs3500.pawnsboard.model.Card;
 import cs3500.pawnsboard.model.CellType;
+import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.ReadOnlyCell;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
@@ -172,7 +173,7 @@ public class MaxRowScoreStrategyTest {
     }
 
     @Override
-    public List<Card> getCurrentPlayerHand() {
+    public List<ICard> getCurrentPlayerHand() {
       return Collections.unmodifiableList(hand);
     }
 

@@ -72,10 +72,10 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
     public List<Card> getCurrentPlayerHand() {
         // realModel gives a List<cs3500.pawnsboard.Model.Card>.
         // We transform that into a List<provider.model.Card> by wrapping each in a ProviderCardAdapter.
-        List<cs3500.pawnsboard.model.Card> realHand = realModel.getCurrentPlayerHand();
+        List<cs3500.pawnsboard.model.ICard> realHand = realModel.getCurrentPlayerHand();
         List<Card> adapted = new ArrayList<>();
-        for (cs3500.pawnsboard.model.Card c : realHand) {
-            adapted.add(new ProviderCardAdapter(c));
+        for (cs3500.pawnsboard.model.ICard c : realHand) {
+            adapted.add(new ProviderCardAdapter((cs3500.pawnsboard.model.Card) c));
         }
         return Collections.unmodifiableList(adapted);
     }
@@ -83,13 +83,13 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
     @Override
     public int getRowScore(int row, PlayerColor color) {
         // convert from the provider's color -> your real color
-        cs3500.pawnsboard.Model.PlayerColor realColor = ProviderColorAdapter.toRealColor(color);
+        cs3500.pawnsboard.model.PlayerColor realColor = ProviderColorAdapter.toRealColor(color);
         return realModel.getRowScore(row, realColor);
     }
 
     @Override
     public int getTotalScore(PlayerColor color) {
-        cs3500.pawnsboard.Model.PlayerColor realColor = ProviderColorAdapter.toRealColor(color);
+        cs3500.pawnsboard.model.PlayerColor realColor = ProviderColorAdapter.toRealColor(color);
         return realModel.getTotalScore(realColor);
     }
 
@@ -100,7 +100,7 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
 
     @Override
     public int getDeckSize(PlayerColor color) {
-        cs3500.pawnsboard.Model.PlayerColor realColor = ProviderColorAdapter.toRealColor(color);
+        cs3500.pawnsboard.model.PlayerColor realColor = ProviderColorAdapter.toRealColor(color);
         return realModel.getDeckSize(realColor);
     }
 }
