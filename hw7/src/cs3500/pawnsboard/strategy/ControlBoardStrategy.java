@@ -1,6 +1,7 @@
 package cs3500.pawnsboard.strategy;
 
 import cs3500.pawnsboard.model.Card;
+import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.IPawnsBoardModel;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
@@ -43,7 +44,7 @@ public class ControlBoardStrategy implements Strategy {
 
     // Iterate over each card and each cell to find valid moves.
     for (int h = 0; h < hand.size(); h++) {
-      Card card = hand.get(h);
+      ICard card = hand.get(h);
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
           var cell = model.getCellState(r, c);

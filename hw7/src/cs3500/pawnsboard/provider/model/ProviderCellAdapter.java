@@ -6,14 +6,14 @@ package cs3500.pawnsboard.provider.model;
  */
 public class ProviderCellAdapter implements ReadOnlyCell {
 
-    private final cs3500.pawnsboard.Model.ReadOnlyCell realCell;
+    private final cs3500.pawnsboard.model.ReadOnlyCell realCell;
 
     /**
      * Construct an adapter around your real read-only cell.
      *
      * @param realCell the actual read-only cell from your model
      */
-    public ProviderCellAdapter(cs3500.pawnsboard.Model.ReadOnlyCell realCell) {
+    public ProviderCellAdapter(cs3500.pawnsboard.model.ReadOnlyCell realCell) {
         if (realCell == null) {
             throw new IllegalArgumentException("realCell cannot be null");
         }
@@ -23,7 +23,7 @@ public class ProviderCellAdapter implements ReadOnlyCell {
     @Override
     public PlayerColor getOwner() {
         // convert your color to the provider color using the utility
-        cs3500.pawnsboard.Model.PlayerColor realOwner = realCell.owner;
+        cs3500.pawnsboard.model.PlayerColor realOwner = realCell.owner;
         return ProviderColorAdapter.toProviderColor(realOwner);
     }
 

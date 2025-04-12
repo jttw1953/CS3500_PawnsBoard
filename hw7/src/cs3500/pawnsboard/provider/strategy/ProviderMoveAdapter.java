@@ -4,9 +4,9 @@ import cs3500.pawnsboard.provider.strategy.Move;
 
 public class ProviderMoveAdapter implements Move {
 
-    private final cs3500.pawnsboard.Strategy.Move realMove;
+    private final cs3500.pawnsboard.strategy.Move realMove;
 
-    public ProviderMoveAdapter(cs3500.pawnsboard.Strategy.Move realMove) {
+    public ProviderMoveAdapter(cs3500.pawnsboard.strategy.Move realMove) {
         if (realMove == null) {
             throw new IllegalArgumentException("realMove cannot be null");
         }

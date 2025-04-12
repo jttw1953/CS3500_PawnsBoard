@@ -1,5 +1,6 @@
 package cs3500.pawnsboard.strategy;
 
+import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.Card;
@@ -39,7 +40,7 @@ public class FillFirstStrategy implements Strategy {
     // or track forPlayer's hand if your model supports that
     // naive row-major approach:
     for (int h = 0; h < hand.size(); h++) {
-      Card card = hand.get(h);
+      ICard card = hand.get(h);
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
           // We'll just do a quick check:

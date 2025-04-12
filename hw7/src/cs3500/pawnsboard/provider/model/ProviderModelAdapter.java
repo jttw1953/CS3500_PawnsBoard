@@ -1,6 +1,6 @@
 package cs3500.pawnsboard.provider.model;
 
-import cs3500.pawnsboard.Model.PawnsBoardModel;
+import cs3500.pawnsboard.model.PawnsBoardModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
     public PlayerColor getCurrentPlayer() {
         // Your real model returns cs3500.pawnsboard.Model.PlayerColor,
         // which we convert to cs3500.pawnsboard.provider.model.PlayerColor.
-        cs3500.pawnsboard.Model.PlayerColor realColor = realModel.getCurrentPlayer();
+        cs3500.pawnsboard.model.PlayerColor realColor = realModel.getCurrentPlayer();
         return ProviderColorAdapter.toProviderColor(realColor);
     }
 
@@ -53,7 +53,7 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
 
     @Override
     public PlayerColor getWinner() {
-        cs3500.pawnsboard.Model.PlayerColor realWinner = realModel.getWinner();
+        cs3500.pawnsboard.model.PlayerColor realWinner = realModel.getWinner();
         if (realWinner == null) {
             return null;
         }
@@ -64,7 +64,7 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
     public ReadOnlyCell getCellState(int row, int col) {
         // Your real model returns a cs3500.pawnsboard.Model.ReadOnlyCell,
         // which we must wrap in ProviderCellAdapter (which implements the *provider*'s ReadOnlyCell).
-        cs3500.pawnsboard.Model.ReadOnlyCell realCell = realModel.getCellState(row, col);
+        cs3500.pawnsboard.model.ReadOnlyCell realCell = realModel.getCellState(row, col);
         return new ProviderCellAdapter(realCell);
     }
 
@@ -72,9 +72,9 @@ public class ProviderModelAdapter implements ReadOnlyPawnsBoardModel {
     public List<Card> getCurrentPlayerHand() {
         // realModel gives a List<cs3500.pawnsboard.Model.Card>.
         // We transform that into a List<provider.model.Card> by wrapping each in a ProviderCardAdapter.
-        List<cs3500.pawnsboard.Model.Card> realHand = realModel.getCurrentPlayerHand();
+        List<cs3500.pawnsboard.model.Card> realHand = realModel.getCurrentPlayerHand();
         List<Card> adapted = new ArrayList<>();
-        for (cs3500.pawnsboard.Model.Card c : realHand) {
+        for (cs3500.pawnsboard.model.Card c : realHand) {
             adapted.add(new ProviderCardAdapter(c));
         }
         return Collections.unmodifiableList(adapted);

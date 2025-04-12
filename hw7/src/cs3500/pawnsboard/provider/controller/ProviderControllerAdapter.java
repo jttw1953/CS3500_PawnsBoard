@@ -4,14 +4,14 @@ package cs3500.pawnsboard.provider.controller;
 public class ProviderControllerAdapter implements IPawnsBoardController {
 
     // Use the fully qualified name for the real controller from your code.
-    private final cs3500.pawnsboard.Controller.IPawnsBoardController realController;
+    private final cs3500.pawnsboard.controller.IPawnsBoardController realController;
 
     /**
      * Construct an adapter around your real PawnsBoard controller.
      *
      * @param realController the actual controller you wrote (local implementation)
      */
-    public ProviderControllerAdapter(cs3500.pawnsboard.Controller.IPawnsBoardController realController) {
+    public ProviderControllerAdapter(cs3500.pawnsboard.controller.IPawnsBoardController realController) {
         this.realController = realController;
     }
 

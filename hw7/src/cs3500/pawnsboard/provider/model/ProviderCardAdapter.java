@@ -6,14 +6,14 @@ package cs3500.pawnsboard.provider.model;
  */
 public class ProviderCardAdapter implements Card {
 
-    private final cs3500.pawnsboard.Model.Card realCard;
+    private final cs3500.pawnsboard.model.Card realCard;
 
     /**
      * Construct an adapter around your real Card.
      *
      * @param realCard the actual Card from your model
      */
-    public ProviderCardAdapter(cs3500.pawnsboard.Model.Card realCard) {
+    public ProviderCardAdapter(cs3500.pawnsboard.model.Card realCard) {
         if (realCard == null) {
             throw new IllegalArgumentException("realCard cannot be null");
         }

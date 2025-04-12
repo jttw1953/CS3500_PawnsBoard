@@ -192,7 +192,7 @@ public class PawnsBoardModel implements IPawnsBoardModel {
   }
 
   @Override
-  public List<Card> getCurrentPlayerHand() {
+  public List<ICard> getCurrentPlayerHand() {
     // Return an unmodifiable copy
     List<Card> hand = getCurrentPlayerState().getHand();
     return Collections.unmodifiableList(hand);

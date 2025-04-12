@@ -18,7 +18,7 @@ public final class ProviderColorAdapter {
      * @throws IllegalArgumentException if the color is unrecognized
      */
     public static cs3500.pawnsboard.provider.model.PlayerColor toProviderColor(
-            cs3500.pawnsboard.Model.PlayerColor realColor) {
+            cs3500.pawnsboard.model.PlayerColor realColor) {
         if (realColor == null) {
             return null;
         }
@@ -31,14 +31,14 @@ public final class ProviderColorAdapter {
                 throw new IllegalArgumentException("Unrecognized color: " + realColor);
         }
     }
-    public static cs3500.pawnsboard.Model.PlayerColor toRealColor(
+    public static cs3500.pawnsboard.model.PlayerColor toRealColor(
             cs3500.pawnsboard.provider.model.PlayerColor providerColor) {
         if (providerColor == null) {
             return null;
         }
         switch (providerColor) {
-            case RED:  return cs3500.pawnsboard.Model.PlayerColor.RED;
-            case BLUE: return cs3500.pawnsboard.Model.PlayerColor.BLUE;
+            case RED:  return cs3500.pawnsboard.model.PlayerColor.RED;
+            case BLUE: return cs3500.pawnsboard.model.PlayerColor.BLUE;
             default:
                 throw new IllegalArgumentException("Unrecognized provider color: " + providerColor);
         }

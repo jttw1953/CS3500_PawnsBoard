@@ -1,5 +1,6 @@
 package cs3500.pawnsboard.strategy;
 
+import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.Card;
@@ -44,7 +45,7 @@ public class MaxRowScoreStrategy implements Strategy {
       if (myRowScore <= oppRowScore) {
         // try each card in the hand
         for (int h = 0; h < hand.size(); h++) {
-          Card card = hand.get(h);
+          ICard card = hand.get(h);
           // try each col
           for (int c = 0; c < cols; c++) {
             var cell = model.getCellState(r, c);
