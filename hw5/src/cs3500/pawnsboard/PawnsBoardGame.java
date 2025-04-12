@@ -1,14 +1,14 @@
 package cs3500.pawnsboard;
 
-import cs3500.pawnsboard.Controller.IPawnsBoardController;
-import cs3500.pawnsboard.Controller.PawnsBoardController;
-import cs3500.pawnsboard.Model.Card;
-import cs3500.pawnsboard.Model.IPawnsBoardModel;
-import cs3500.pawnsboard.Model.PawnsBoardModel;
-import cs3500.pawnsboard.Model.PlayerColor;
-import cs3500.pawnsboard.Model.ReadOnlyPawnsBoardModel;
-import cs3500.pawnsboard.Util.DeckReader;
-import cs3500.pawnsboard.View.PawnsBoardSwingView;
+import cs3500.pawnsboard.controller.IPawnsBoardController;
+import cs3500.pawnsboard.controller.PawnsBoardController;
+import cs3500.pawnsboard.model.Card;
+import cs3500.pawnsboard.model.IPawnsBoardModel;
+import cs3500.pawnsboard.model.PawnsBoardModel;
+import cs3500.pawnsboard.model.PlayerColor;
+import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
+import cs3500.pawnsboard.util.DeckReader;
+import cs3500.pawnsboard.view.PawnsBoardSwingView;
 
 // -- Provider imports --
 import cs3500.pawnsboard.provider.model.ProviderModelAdapter;

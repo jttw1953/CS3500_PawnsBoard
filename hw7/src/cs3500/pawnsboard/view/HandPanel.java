@@ -1,5 +1,6 @@
 package cs3500.pawnsboard.view;
 
+import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.model.Card;
 import cs3500.pawnsboard.model.PlayerColor;
@@ -50,7 +51,7 @@ public class HandPanel extends JPanel {
     this.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        List<Card> hand = model.getCurrentPlayerHand();
+        List<ICard> hand = model.getCurrentPlayerHand();
         if (hand.isEmpty()) {
           return;
         }
@@ -97,7 +98,7 @@ public class HandPanel extends JPanel {
     Graphics2D g2 = (Graphics2D) g;
 
     // Draw the current player's hand
-    List<Card> hand = model.getCurrentPlayerHand();
+    List<ICard> hand = model.getCurrentPlayerHand();
     if (hand.isEmpty()) {
       g2.setColor(Color.BLACK);
       g2.drawString("No cards in hand", 10, 20);
@@ -129,8 +130,8 @@ public class HandPanel extends JPanel {
       g2.drawRect(x, y, cardW, cardH);
 
       // Draw the 5x5 influence grid
-      Card c = hand.get(i);
-      InfluenceGrid ig = c.getInfluenceGrid();  // Assumes Card has a getInfluenceGrid() method
+      ICard c = hand.get(i);
+      InfluenceGrid ig = (InfluenceGrid) c.getInfluenceGrid();
       if (ig != null) {
         int subW = cardW / 5;
         int subH = cardH / 5;

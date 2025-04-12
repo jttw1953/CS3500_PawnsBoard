@@ -64,7 +64,7 @@ public interface ReadOnlyPawnsBoardModel {
    *
    * @return a list of cards in the current player's hand
    */
-  List<Card> getCurrentPlayerHand();
+  List<ICard> getCurrentPlayerHand();
 
   /**
    * Returns the score for the specified player in the given row.
