@@ -6,29 +6,29 @@ package cs3500.pawnsboard.provider.model;
  */
 public interface Card {
 
-    /**
-     * Returns the name of this card.
-     *
-     * @return the card name
-     */
-    String getName();
+  /**
+   * Returns the name of this card.
+   *
+   * @return the card name
+   */
+  String getName();
 
-    /**
-     * Returns the cost of this card.
-     *
-     * @return the card's cost
-     */
-    int getCost();
+  /**
+   * Returns the cost of this card.
+   *
+   * @return the card's cost
+   */
+  int getCost();
 
-    /**
-     * Returns the value of this card.
-     *
-     * @return the card's value
-     */
-    int getValue();
+  /**
+   * Returns the value of this card.
+   *
+   * @return the card's value
+   */
+  int getValue();
 
-    /*
-     * If the provider’s code calls additional methods (e.g., getInfluenceGrid()),
-     * you can add them here to match what they expect. Otherwise, keep it minimal.
-     */
+  /*
+   * If the provider’s code calls additional methods (e.g., getInfluenceGrid()),
+   * you can add them here to match what they expect. Otherwise, keep it minimal.
+   */
 }

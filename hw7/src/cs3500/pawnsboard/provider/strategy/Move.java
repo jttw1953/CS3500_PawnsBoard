@@ -7,31 +7,31 @@ package cs3500.pawnsboard.provider.strategy;
  */
 public interface Move {
 
-    /**
-     * Returns whether this move is a pass.
-     *
-     * @return true if pass, false otherwise
-     */
-    boolean isPass();
+  /**
+   * Returns whether this move is a pass.
+   *
+   * @return true if pass, false otherwise
+   */
+  boolean isPass();
 
-    /**
-     * Returns the index of the card in the player's hand for a place-move.
-     *
-     * @return the hand index, or -1 if it's a pass
-     */
-    int getHandIndex();
+  /**
+   * Returns the index of the card in the player's hand for a place-move.
+   *
+   * @return the hand index, or -1 if it's a pass
+   */
+  int getHandIndex();
 
-    /**
-     * Returns the row to place the card for a place-move.
-     *
-     * @return the row, or -1 if it's a pass
-     */
-    int getRow();
+  /**
+   * Returns the row to place the card for a place-move.
+   *
+   * @return the row, or -1 if it's a pass
+   */
+  int getRow();
 
-    /**
-     * Returns the column to place the card for a place-move.
-     *
-     * @return the column, or -1 if it's a pass
-     */
-    int getCol();
+  /**
+   * Returns the column to place the card for a place-move.
+   *
+   * @return the column, or -1 if it's a pass
+   */
+  int getCol();
 }

@@ -1,35 +1,33 @@
 package cs3500.pawnsboard.provider.strategy;
 
-import cs3500.pawnsboard.provider.strategy.Move;
-
 public class ProviderMoveAdapter implements Move {
 
-    private final cs3500.pawnsboard.strategy.Move realMove;
+  private final cs3500.pawnsboard.strategy.Move realMove;
 
-    public ProviderMoveAdapter(cs3500.pawnsboard.strategy.Move realMove) {
-        if (realMove == null) {
-            throw new IllegalArgumentException("realMove cannot be null");
-        }
-        this.realMove = realMove;
+  public ProviderMoveAdapter(cs3500.pawnsboard.strategy.Move realMove) {
+    if (realMove == null) {
+      throw new IllegalArgumentException("realMove cannot be null");
     }
+    this.realMove = realMove;
+  }
 
-    @Override
-    public boolean isPass() {
-        return realMove.isPass;
-    }
+  @Override
+  public boolean isPass() {
+    return realMove.isPass;
+  }
 
-    @Override
-    public int getHandIndex() {
-        return realMove.handIndex;
-    }
+  @Override
+  public int getHandIndex() {
+    return realMove.handIndex;
+  }
 
-    @Override
-    public int getRow() {
-        return realMove.row;
-    }
+  @Override
+  public int getRow() {
+    return realMove.row;
+  }
 
-    @Override
-    public int getCol() {
-        return realMove.col;
-    }
+  @Override
+  public int getCol() {
+    return realMove.col;
+  }
 }

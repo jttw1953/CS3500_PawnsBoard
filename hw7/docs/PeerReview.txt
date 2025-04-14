@@ -1,0 +1,18 @@
+Peer Review – HW8
+
+Design Critique:
+----------------
+The provider’s interface design was rather clean, and followed a modular approach allowing easy identification of the integration places. Using `ICompPlayer`, `ReadOnlyIPawnsBoardModel`, and `YourPlayer` clearly removed roles and what is expected. But we discovered that sometimes their abstraction made a certain internal structure (for example, a particular structure by which moves or colors were represented) a prerequisite on our end. Data representation would have been more flexible or shared abstractions used between different implementations would have increased compatibility.
+
+Implementation Critique:
+-------------------------
+The thing is that from a code logic point of view, the code was structured well, and the design patterns used were reasonable. Unfortunately, our integration was made more difficult by the fact that several of the key components (most obviously the working implementation of their graphical view) were either missing or only partially implemented. In addition, they had to heavily glue code together to make up for the differences between the move generation and evaluation it assumed would be present in the strategy system. However, when a short amount adapter classes were written everything worked as expected without any side effects by the provider’s model and controller interfaces.
+
+Documentation Critique:
+------------------------
+The code of the provider was moderately documented. Basic comments were done, but with lots of additional explanations what should be expected in terms of expected usage patterns, edge cases, or integration tips would have been very useful. For example, it wasn’t obvious whether we were supposed to supply our own view or use a placeholder. Encouraging to include either Javadoc level documentation (or a README for usage) would have avoided ambiguity. The structure was fairly linear and helped us navigate that structure without getting lost.
+
+
+Design Limitations and Suggestions:
+-----------------------------------
+An important limitation was that the provider culture enforced a rigid data model in their interfaces (expects to receive specific classes for moves and colors, there are no built in helpers for automated conversion). To address this, we used adapter classes but a more interface driven approach to those subcomponents would also diminish the amount of manual conversion. We also propose having at least a mock or minimal example (such as a no op `YourPlayer`) that people can just try to get up and running as quickly as possible. The main takeaway from the provider’s system was that it was usable overall and followed the goals of modular interface based design however, there would be small changes to flexibility and documentation that would make the system even easier to use.

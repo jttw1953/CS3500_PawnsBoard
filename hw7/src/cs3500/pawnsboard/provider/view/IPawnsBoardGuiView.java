@@ -1,4 +1,4 @@
-package  cs3500.pawnsboard.provider.view;
+package cs3500.pawnsboard.provider.view;
 
 import cs3500.pawnsboard.provider.controller.IPawnsBoardController;
 
@@ -9,18 +9,18 @@ import cs3500.pawnsboard.provider.controller.IPawnsBoardController;
  */
 public interface IPawnsBoardGuiView {
 
-    /**
-     * Make the view visible (if it isn’t already).
-     */
-    void makeVisible();
+  /**
+   * Make the view visible (if it isn’t already).
+   */
+  void makeVisible();
 
-    /**
-     * Force the view to redraw itself from the model.
-     */
-    void refresh();
+  /**
+   * Force the view to redraw itself from the model.
+   */
+  void refresh();
 
-    /**
-     * Set the controller that will handle user interactions (mouse, keys).
-     */
-    void setController(IPawnsBoardController controller);
+  /**
+   * Set the controller that will handle user interactions (mouse, keys).
+   */
+  void setController(IPawnsBoardController controller);
 }

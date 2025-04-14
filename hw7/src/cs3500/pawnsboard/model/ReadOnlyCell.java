@@ -17,7 +17,7 @@ public class ReadOnlyCell {
     this.type = cell.getType();
     this.owner = cell.getOwner();
     this.pawnCount = cell.getPawnCount();
-    Card c = cell.getCard();
+    ICard c = cell.getCard();
     this.cardName = (c == null) ? "" : c.getName();
   }
 

@@ -31,7 +31,7 @@ public class CompositeStrategy implements Strategy {
    * Chooses a move by applying each strategy in order until one returns
    * a non-pass move. If all strategies return a pass, this method returns a pass as well.
    *
-   * @param model the read-only view of the game state
+   * @param model     the read-only view of the game state
    * @param forPlayer the player for whom the move is being chosen
    * @return the first non-pass move returned by the strategies, or a pass if none apply
    */

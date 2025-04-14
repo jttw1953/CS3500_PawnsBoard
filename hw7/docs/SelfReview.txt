@@ -1,0 +1,11 @@
+Self Review – HW8
+
+What We Wish We Had Done Differently:
+-------------------------------------
+Overall we regret that we did not ensure that our model and core data classes (Card and InfluenceGrid) would have been designed with interfaces in mind from the very start. It was harder to make ICard, IInfluenceGrid and so on and later have to refactor those classes to support these given interfaces. It was a good reminder that for modules or collaborative systems, interface driven design is what is important.
+
+Also, we learned from the code we were given that it’s a lot easier to make integration if you design for flexibility (e.g. Ambulatory enums, generic strategies, interface based models). Even if some of the naming and structure was different, it was relatively easy to connect because our provider had used abstract interfaces throughout their system.
+
+Our Experience with Our Providers:
+----------------------------------
+The codebase of our providers was well organized, however their documentation didn’t make much sense. However, their interfaces were clear, but we had to experiment to fully figure out how to cloak or implement them. The structure of their model was appreciated, separating out controller and view logic well, but none of that mattered if there were no view implementation working or, better yet, an example player. Taken overall, the experience was collaborative and being reinforced the value of clear communication and clean boundary around interface.

@@ -10,27 +10,27 @@ import cs3500.pawnsboard.provider.model.ReadOnlyPawnsBoardModel;
  */
 public class ProviderViewImpl implements IPawnsBoardGuiView {
 
-    private final ReadOnlyPawnsBoardModel model;
-    private IPawnsBoardController controller;
+  private final ReadOnlyPawnsBoardModel model;
+  private IPawnsBoardController controller;
 
-    public ProviderViewImpl(ReadOnlyPawnsBoardModel model) {
-        this.model = model;
-    }
+  public ProviderViewImpl(ReadOnlyPawnsBoardModel model) {
+    this.model = model;
+  }
 
-    @Override
-    public void makeVisible() {
-        // If we had real GUI code from the provider, we'd open a JFrame etc.
-        System.out.println("Pretending to show provider's view...");
-    }
+  @Override
+  public void makeVisible() {
+    // If we had real GUI code from the provider, we'd open a JFrame etc.
+    System.out.println("Pretending to show provider's view...");
+  }
 
-    @Override
-    public void refresh() {
-        // Redraw logic would go here
-        System.out.println("Pretending to refresh provider's view...");
-    }
+  @Override
+  public void refresh() {
+    // Redraw logic would go here
+    System.out.println("Pretending to refresh provider's view...");
+  }
 
-    @Override
-    public void setController(IPawnsBoardController controller) {
-        this.controller = controller;
-    }
+  @Override
+  public void setController(IPawnsBoardController controller) {
+    this.controller = controller;
+  }
 }
