@@ -1,93 +1,139 @@
 package cs3500.pawnsboard;
 
-import cs3500.pawnsboard.controller.IPawnsBoardController;
-import cs3500.pawnsboard.controller.PawnsBoardController;
-import cs3500.pawnsboard.model.Card;
-import cs3500.pawnsboard.model.IPawnsBoardModel;
-import cs3500.pawnsboard.model.PawnsBoardModel;
-import cs3500.pawnsboard.model.PlayerColor;
-import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
-import cs3500.pawnsboard.util.DeckReader;
-import cs3500.pawnsboard.view.PawnsBoardSwingView;
+import cs3500.pawnsboard.Controller.IPawnsBoardController;
+import cs3500.pawnsboard.Controller.PawnsBoardController;
+import cs3500.pawnsboard.Model.Card;
+import cs3500.pawnsboard.Model.IPawnsBoardModel;
+import cs3500.pawnsboard.Model.PawnsBoardModel;
+import cs3500.pawnsboard.Model.PlayerColor;
+import cs3500.pawnsboard.Model.ReadOnlyPawnsBoardModel;
+import cs3500.pawnsboard.Strategy.*;
+import cs3500.pawnsboard.Util.DeckReader;
+import cs3500.pawnsboard.View.PawnsBoardSwingView;
 
-// -- Provider imports --
-import cs3500.pawnsboard.provider.model.ProviderModelAdapter;
+// Provider code
 import cs3500.pawnsboard.provider.controller.ProviderControllerAdapter;
+import cs3500.pawnsboard.provider.model.ProviderModelAdapter;
 import cs3500.pawnsboard.provider.view.ProviderViewImpl;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PawnsBoardGame {
+/**
+ * A main class that:
+ *  - Takes four args: <redDeckPath> <blueDeckPath> <redType> <blueType>
+ *  - Sets up Red with your view/controller + optional AI
+ *  - Sets up Blue using the provider's code (someone else's).
+ *  - Immediately checks if an AI can move (so you see it in action).
+ */
+public final class PawnsBoardGame {
     public static void main(String[] args) {
-        // Optionally parse arguments (deck paths, player types, etc.)
-        // For now, we’ll just have a simple path to a deck config:
-        String deckPath = "docs/deck.config";
+        // 1) Expect exactly four args
+        if (args.length < 4) {
+            System.err.println("Usage: java -jar pawnsboard.jar <redDeck> <blueDeck> <redType> <blueType>");
+            System.err.println("Example: java -jar pawnsboard.jar docs/red.config docs/blue.config human fillfirst");
+            System.exit(1);
+        }
 
-        // Decide whether to use provider’s view for Player 2 (optional).
-        // e.g. run:  java -jar pawnsboard.jar --provider2
-        boolean useProviderForBlue = (args.length > 0 && args[0].equals("--provider2"));
+        // 2) Parse them
+        String redDeckPath = args[0];
+        String blueDeckPath = args[1];
+        String redType = args[2].toLowerCase();   // "human", "fillfirst", ...
+        String blueType = args[3].toLowerCase();  // "human", "maxrow", ...
 
+        // 3) Read both decks
+        List<Card> redDeck;
+        List<Card> blueDeck;
         try {
-            // 1) Read the deck
-            List<Card> deck = DeckReader.readDeckFromFile(deckPath);
-
-            // 2) Construct our real model
-            IPawnsBoardModel model = new PawnsBoardModel(
-                    5,  // rows
-                    7,  // cols
-                    deck, // red deck
-                    deck, // blue deck
-                    5   // initial hand size
-            );
-
-            // We'll use this read-only reference for our own view
-            ReadOnlyPawnsBoardModel roModel = model;
-
-            // --- Player 1 (RED) uses our own SwingView + our own controller ---
-            PawnsBoardSwingView redView = new PawnsBoardSwingView(roModel);
-            IPawnsBoardController redController =
-                    new PawnsBoardController(model, redView, PlayerColor.RED);
-            redView.setController(redController);
-            redView.makeVisible();
-
-            if (!useProviderForBlue) {
-                // -- Player 2 uses YOUR old view + controller --
-
-                PawnsBoardSwingView blueView = new PawnsBoardSwingView(roModel);
-                IPawnsBoardController blueController =
-                        new PawnsBoardController(model, blueView, PlayerColor.BLUE);
-                blueView.setController(blueController);
-                blueView.makeVisible();
-
-            } else {
-                // -- Player 2 uses PROVIDER’s code --
-
-                // 1) providerModelAdapter
-                ProviderModelAdapter providerModelAdapter =
-                        new ProviderModelAdapter((PawnsBoardModel) model);
-
-                // 2) The provider’s view (or your stub if you had to create one)
-                ProviderViewImpl providerBlueView =
-                        new ProviderViewImpl(providerModelAdapter);
-
-                // 3) Your real controller for Player 2
-                IPawnsBoardController myBlueController =
-                        new PawnsBoardController(model, null, PlayerColor.BLUE);
-
-                // 4) Wrap it so the provider’s view can call it
-                ProviderControllerAdapter providerBlueController =
-                        new ProviderControllerAdapter(myBlueController);
-
-                // 5) Link them
-                providerBlueView.setController(providerBlueController);
-                providerBlueView.makeVisible();
-            }
-
-
+            redDeck  = DeckReader.readDeckFromFile(redDeckPath);
+            blueDeck = DeckReader.readDeckFromFile(blueDeckPath);
         } catch (FileNotFoundException e) {
             System.err.println("Could not load deck file: " + e.getMessage());
-            System.exit(1);
+            return;
+        }
+
+        // 4) Create your PawnsBoardModel with these decks
+        IPawnsBoardModel model = new PawnsBoardModel(
+                5,  // rows
+                7,  // cols
+                redDeck,
+                blueDeck,
+                5   // initial hand size
+        );
+        ReadOnlyPawnsBoardModel roModel = model; // for passing to your swing view
+
+        // 5) Build strategy for Red, or null if "human"
+        Strategy redStrategy = parseStrategy(redType);
+
+        // 6) Build a swing view + your controller for Red
+        PawnsBoardSwingView redView = new PawnsBoardSwingView(roModel);
+        IPawnsBoardController redController =
+                new PawnsBoardController(model, redView, PlayerColor.RED, redStrategy);
+        redView.setController(redController);
+        redView.makeVisible();
+
+        // -------------------------------------------------------------------------
+        // 7) Blue is "someone else's code" from the provider
+        // -------------------------------------------------------------------------
+
+        // (Optional) Build a strategy for Blue if your provider code can handle AI:
+        Strategy blueStrategy = parseStrategy(blueType);
+        // If your provider code can't do AI, just ignore blueStrategy or pass null
+
+        // a) Adapt the model
+        ProviderModelAdapter providerModelAdapter =
+                new ProviderModelAdapter((PawnsBoardModel) model);
+
+        // b) Create the provider’s view
+        ProviderViewImpl providerBlueView = new ProviderViewImpl(providerModelAdapter);
+
+        // c) Make *your* real controller for the Blue player
+        IPawnsBoardController myBlueController =
+                new PawnsBoardController(model, null, PlayerColor.BLUE, blueStrategy);
+
+        // d) Wrap your controller so the provider’s view can talk to it
+        ProviderControllerAdapter providerBlueController =
+                new ProviderControllerAdapter(myBlueController);
+
+        // e) Link them
+        providerBlueView.setController(providerBlueController);
+        providerBlueView.makeVisible();
+
+        // -------------------------------------------------------------------------
+        // 8) Force each side to "check if AI can move" so it goes immediately
+        // -------------------------------------------------------------------------
+        if (redController instanceof PawnsBoardController) {
+            ((PawnsBoardController) redController).forceAiCheck();
+        }
+        if (myBlueController instanceof PawnsBoardController) {
+            ((PawnsBoardController) myBlueController).forceAiCheck();
+        }
+    }
+
+    /**
+     * Convert a string (e.g. "human", "fillfirst", "maxrow", "control", "composite")
+     * into a Strategy object or null if "human" or unknown.
+     */
+    private static Strategy parseStrategy(String s) {
+        switch (s) {
+            case "human":
+                return null;
+            case "fillfirst":
+                return new FillFirstStrategy();
+            case "maxrow":
+                return new MaxRowScoreStrategy();
+            case "control":
+                return new ControlBoardStrategy();
+            case "composite":
+                // Example: fillfirst + maxrow
+                List<Strategy> list = new ArrayList<>();
+                list.add(new FillFirstStrategy());
+                list.add(new MaxRowScoreStrategy());
+                return new CompositeStrategy(list);
+            default:
+                System.out.println("Unknown strategy \"" + s + "\" => defaulting to human.");
+                return null;
         }
     }
 }
