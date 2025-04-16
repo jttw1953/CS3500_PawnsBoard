@@ -10,6 +10,7 @@ import cs3500.pawnsboard.model.Card;
 import cs3500.pawnsboard.model.CellType;
 import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.IPawnsBoardModel;
+import cs3500.pawnsboard.model.ModelObserver;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.ReadOnlyCell;
 
@@ -107,6 +108,11 @@ public class ControlBoardStrategyTest {
       // If the test needs real deep copy logic, we can replicate it.
       // For demonstration, just create a shallow copy:
       return new MockModel(rows, cols, current, new ArrayList<>(hand), cells);
+    }
+
+    @Override
+    public void addObserver(ModelObserver obs) {
+      //stub
     }
 
     @Override
