@@ -1,163 +1,148 @@
-package cs3500.pawnsboard.controller;
+package cs3500.pawnsboard.Controller;
 
-import cs3500.pawnsboard.model.IPawnsBoardModel;
-import cs3500.pawnsboard.model.PlayerColor;
-import cs3500.pawnsboard.strategy.Move;
-import cs3500.pawnsboard.strategy.Strategy;
-import cs3500.pawnsboard.view.IPawnsBoardGuiView;
+import cs3500.pawnsboard.Model.IPawnsBoardModel;
+import cs3500.pawnsboard.Model.ModelObserver;
+import cs3500.pawnsboard.Model.PlayerColor;
+import cs3500.pawnsboard.Strategy.Move;
+import cs3500.pawnsboard.View.IPawnsBoardGuiView;
 
 /**
- * A real controller that handles user input and enforces
- * the turn-based rules for one player (RED or BLUE).
- * Now enhanced to optionally handle an AI (machine) player
- * if aiStrategy != null. If aiStrategy is null => human player.
+ * A controller responsible for a single player (RED or BLUE).
+ * It mediates between:
+ *  - the model,
+ *  - a Player (human or AI),
+ *  - and an optional IPawnsBoardGuiView (GUI).
+ * It does NOT implement strategy logic itself;
+ * that is in the Player implementation.
  */
-public class PawnsBoardController implements IPawnsBoardController {
+public class PawnsBoardController implements IPawnsBoardController, ModelObserver {
 
-  private final IPawnsBoardModel model;
-  private final IPawnsBoardGuiView view;
-  private final PlayerColor myColor;
+    private final IPawnsBoardModel model;
+    private final IPawnsBoardGuiView view;   // May be null if this side doesn't need a GUI
+    private final PlayerColor myColor;
+    private final Player player;             // The abstraction that decides moves
 
-  // If non-null, this side is an AI that auto-plays whenever it's my turn.
-  private final Strategy aiStrategy;
+    /**
+     * Constructs a controller for one player/color.
+     *
+     * @param model  the shared game model
+     * @param view   a GUI view (or null) for this player
+     * @param myColor which PlayerColor (RED or BLUE) this controller manages
+     * @param player  the entity that decides moves (human or AI)
+     */
+    public PawnsBoardController(IPawnsBoardModel model,
+                                IPawnsBoardGuiView view,
+                                PlayerColor myColor,
+                                Player player) {
+        this.model = model;
+        this.view = view;
+        this.myColor = myColor;
+        this.player = player;
 
-  // Selections for human input
-  private int selectedCardIndex = -1;
-  private int selectedRow = -1;
-  private int selectedCol = -1;
-
-  /**
-   * @param model      the shared game model
-   * @param view       a GUI view for this player's perspective (can be null if not needed)
-   * @param color      which player color (RED/BLUE) we handle
-   * @param aiStrategy if non-null, we auto-play using this strategy
-   */
-  public PawnsBoardController(IPawnsBoardModel model,
-                              IPawnsBoardGuiView view,
-                              PlayerColor color,
-                              Strategy aiStrategy) {
-    this.model = model;
-    this.view = view;
-    this.myColor = color;
-    this.aiStrategy = aiStrategy;
-  }
-
-  @Override
-  public void onCellClicked(int row, int col) {
-    if (model.isGameOver()) {
-      return;
+        model.addObserver(this);
     }
-    // If we are a HUMAN and it's our turn, handle the click:
-    if (aiStrategy == null && model.getCurrentPlayer() == myColor) {
-      this.selectedRow = row;
-      this.selectedCol = col;
-      if (view != null) {
-        view.refresh();
-      }
-    }
-    // Now let an AI move if needed
-    tryAiMoveIfMyTurn();
-  }
 
-  @Override
-  public void onCardClicked(int cardIndex) {
-    if (model.isGameOver()) {
-      return;
+    @Override
+    public void onTurnChanged(PlayerColor newActivePlayer) {
+        // Possibly do something like re-check AI moves
+        // or highlight whose turn it is, etc.
+        if (view != null) {
+            view.refresh();
+        }
     }
-    // For a HUMAN on our turn:
-    if (aiStrategy == null && model.getCurrentPlayer() == myColor) {
-      this.selectedCardIndex = cardIndex;
-      if (view != null) {
-        view.refresh();
-      }
-    }
-    tryAiMoveIfMyTurn();
-  }
 
-  @Override
-  public void onConfirm() {
-    if (model.isGameOver()) {
-      return;
-    }
-    // Human logic
-    if (aiStrategy == null && model.getCurrentPlayer() == myColor) {
-      if (selectedCardIndex < 0 || selectedRow < 0 || selectedCol < 0) {
-        System.out.println("No card/cell selected yet!");
-        return;
-      }
-      try {
-        model.placeCard(selectedCardIndex, selectedRow, selectedCol);
-      } catch (IllegalArgumentException | IllegalStateException e) {
-        System.err.println("Cannot place card: " + e.getMessage());
-        // optionally: if (view != null) { view.showErrorMessage(e.getMessage()); }
-      }
-      resetSelections();
-      if (view != null) {
-        view.refresh();
-      }
-    }
-    // Then see if AI should move
-    tryAiMoveIfMyTurn();
-  }
+    @Override
+    public void onGameOver(PlayerColor winner) {
 
-  @Override
-  public void onPass() {
-    if (model.isGameOver()) {
-      return;
+        if (view != null) {
+            view.refresh();
+        }
     }
-    // Human logic
-    if (aiStrategy == null && model.getCurrentPlayer() == myColor) {
-      model.pass();
-      resetSelections();
-      if (view != null) {
-        view.refresh();
-      }
+
+    @Override
+    public void onCellClicked(int row, int col) {
+        if (model.isGameOver()) {
+            return;
+        }
+        // Only pass the click to our player if it's actually our turn:
+        if (model.getCurrentPlayer() == myColor) {
+            player.handleCellClick(row, col);
+            attemptMove();
+        }
+        if (view != null) {
+            view.refresh();
+        }
     }
-    // Then let AI move if it’s AI’s turn
-    tryAiMoveIfMyTurn();
-  }
 
-  /**
-   * If aiStrategy != null and it's currently our turn and the game isn't over,
-   * automatically pick a move and place/pass.
-   */
-  private void tryAiMoveIfMyTurn() {
-    if (aiStrategy == null) {
-      return;
+    @Override
+    public void onCardClicked(int cardIndex) {
+        if (model.isGameOver()) {
+            return;
+        }
+        if (model.getCurrentPlayer() == myColor) {
+            player.handleCardClick(cardIndex);
+            attemptMove();
+        }
+        if (view != null) {
+            view.refresh();
+        }
     }
-    if (model.isGameOver() || model.getCurrentPlayer() != myColor) {
-      return;
+
+    @Override
+    public void onConfirm() {
+        if (model.isGameOver()) {
+            return;
+        }
+        if (model.getCurrentPlayer() == myColor) {
+            player.confirm();
+            attemptMove();
+        }
+        if (view != null) {
+            view.refresh();
+        }
     }
-    System.out.println("AI (" + myColor + ") checking for a move...");
 
-    Move chosen = aiStrategy.chooseMove(model, myColor);
-    if (chosen.isPass) {
-      System.out.println("AI (" + myColor + ") PASSED");
-      model.pass();
-    } else {
-      System.out.println("AI (" + myColor + ") placing card index " + chosen.handIndex +
-              " at (" + chosen.row + "," + chosen.col + ")");
-      try {
-        model.placeCard(chosen.handIndex, chosen.row, chosen.col);
-      } catch (IllegalArgumentException | IllegalStateException e) {
-        System.out.println("AI (" + myColor + ") had invalid move; passing. " + e.getMessage());
-        model.pass();
-      }
+    @Override
+    public void onPass() {
+        if (model.isGameOver()) {
+            return;
+        }
+        if (model.getCurrentPlayer() == myColor) {
+            player.pass();
+            attemptMove();
+        }
+        if (view != null) {
+            view.refresh();
+        }
     }
-    if (view != null) {
-      view.refresh();
+
+    /**
+     * Tries to fetch a completed move from the Player and apply it to the model.
+     * If the player isn't ready to commit a move yet (returns null), we do nothing.
+     * If we get a valid move, we place or pass in the model.
+     */
+    private void attemptMove() {
+        if (model.isGameOver() || model.getCurrentPlayer() != myColor) {
+            return;
+        }
+
+        // Ask the player for the next move
+        Move move = player.getNextMove(model, myColor);
+        if (move == null) {
+            // Means the user hasn't finalized or the AI is "thinking".
+            return;
+        }
+
+        if (move.isPass) {
+            model.pass();
+        } else {
+            try {
+                model.placeCard(move.handIndex, move.row, move.col);
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                System.err.println("Invalid move: " + e.getMessage());
+                // The player might see the error next time around
+            }
+        }
     }
-  }
-
-
-  private void resetSelections() {
-    selectedCardIndex = -1;
-    selectedRow = -1;
-    selectedCol = -1;
-  }
-
-  public void forceAiCheck() {
-    tryAiMoveIfMyTurn();
-  }
-
 }
+
