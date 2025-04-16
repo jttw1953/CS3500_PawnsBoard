@@ -44,6 +44,8 @@ public interface IPawnsBoardModel extends ReadOnlyPawnsBoardModel {
    * @return a copy of the current model
    */
   IPawnsBoardModel copyModel();
+
+  void addObserver(ModelObserver obs);
 }
 
 
