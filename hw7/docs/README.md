@@ -244,3 +244,37 @@ This phase introduced full game interactivity by connecting the model and view t
 - View and controller are more cleanly separated
 - The model is updated only through validated controller actions
 - GUI feedback is tied to controller decisions, improving user experience
+
+### Summary of Fixes and Command-Line Usage
+#### What Was Fixed
+##### Separation of Player and Controller Functionality
+
+Before: The controller directly contained both human input and AI (strategy) logic.
+
+After: We introduced a new Player abstraction (with HumanPlayer and AIPlayer implementations) so that the controller now solely mediates between the model, view, and player. This separation clarifies responsibilities:
+
+##### Player classes decide what move to make (via user input or an AI strategy), and
+
+The controller simply passes view events to the player and applies the resulting move to the model.
+
+##### Observer Pattern Added to the Model
+
+Before: The model did not maintain references to observers nor did it have mechanisms to notify them upon state changes.
+
+After: We added a ModelObserver interface and integrated observer management within PawnsBoardModel.
+
+A list of observers is maintained, and methods like addObserver(ModelObserver obs), notifyTurnChanged(), and notifyGameOver() were added so that the model now actively informs controllers and views when important events (such as turn changes or game end) occur.
+
+#### Command-Line Argument Integration Preserved from HW7
+
+We maintained the four-argument input format:
+
+Argument 1: The file path to the Red deck configuration.
+
+Argument 2: The file path to the Blue deck configuration.
+
+Argument 3: Red’s player type (for example, human, fillfirst, etc.).
+
+Argument 4: Blue’s player type (for example, human, maxrow, etc.).
+
+This ensures that all previous functionality works as expected while integrating the provider’s code for Player 2.
