@@ -29,18 +29,24 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * A main class that:
- * - Takes four args: <redDeckPath> <blueDeckPath> <redType> <blueType>
- * - Sets up Red with your model & view (human or AI).
- * - Sets up Blue with the provider code (the "someone else's" code).
- * - Preserves old command-line usage while fulfilling HW8 requirements.
+ * Main class for a fully playable two-player Pawns Board game.
+ * This version uses one deck configuration file for both players.
  */
 public final class PawnsBoardGame {
+
+  /**
+   * The main entry point for a demonstration of the PawnsBoard game.
+   * This method initializes the game model, loads the deck configuration,
+   * and runs a simple demonstration of gameplay.
+   * @param args command-line arguments
+   */
   public static void main(String[] args) {
     // 1) Expect exactly four args
     if (args.length < 4) {
-      System.err.println("Usage: java -jar pawnsboard.jar <redDeck> <blueDeck> <redType> <blueType>");
-      System.err.println("Example: java -jar pawnsboard.jar docs/red.config docs/blue.config human fillfirst");
+      System.err.println("Usage: java -jar pawnsboard.jar <redDeck> " +
+              "<blueDeck> <redType> <blueType>");
+      System.err.println("Example: java -jar pawnsboard.jar " +
+              "docs/red.config docs/blue.config human fillfirst");
       System.exit(1);
     }
 
@@ -51,7 +57,8 @@ public final class PawnsBoardGame {
     String blueType = args[3].toLowerCase();  // "human", "maxrow", ...
 
     // 3) Read both decks
-    List<Card> redDeck, blueDeck;
+    List<Card> redDeck;
+    List<Card> blueDeck;
     try {
       redDeck = DeckReader.readDeckFromFile(redDeckPath);
       blueDeck = DeckReader.readDeckFromFile(blueDeckPath);

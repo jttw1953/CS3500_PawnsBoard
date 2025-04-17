@@ -32,6 +32,14 @@ public final class ProviderColorAdapter {
     }
   }
 
+  /**
+   * Converts a {@code PlayerColor} from the provider's enum into the corresponding color
+   * in our own implementation.
+   * @param providerColor the color enum from the provider’s codebase
+   * @return the equivalent {@code PlayerColor} from our implementation,
+   * or {@code null} if input is null
+   * @throws IllegalArgumentException if the provided color is not recognized
+   */
   public static cs3500.pawnsboard.model.PlayerColor toRealColor(
           cs3500.pawnsboard.provider.model.PlayerColor providerColor) {
     if (providerColor == null) {

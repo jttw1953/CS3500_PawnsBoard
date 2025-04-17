@@ -25,8 +25,8 @@ public interface IPawnsBoardModel extends ReadOnlyPawnsBoardModel {
    * @param handIndex the index of the card in the current player's hand
    * @param row       the row on the board to place the card
    * @param col       the column on the board to place the card
-   * @throws IllegalArgumentException if the move is invalid (e.g., not enough pawns,
-   *                                  wrong ownership, cell already occupied, or index out of bounds)
+   * @throws IllegalArgumentException if the move is invalid (e.g, not enough pawns,
+   *                                  wrong ownership, cell already occupied, index out of bounds)
    */
   void placeCard(int handIndex, int row, int col);
 

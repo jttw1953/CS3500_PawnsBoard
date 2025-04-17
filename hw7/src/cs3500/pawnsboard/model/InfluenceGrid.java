@@ -4,7 +4,7 @@ package cs3500.pawnsboard.model;
  * Represents the 5x5 influence layout of a Card.
  * 'C' is at [2][2], 'I' cells are influenced, 'X' cells are not influenced.
  */
-public class InfluenceGrid implements IInfluenceGrid{
+public class InfluenceGrid implements IInfluenceGrid {
   private final char[][] grid; // always 5x5
 
   /**

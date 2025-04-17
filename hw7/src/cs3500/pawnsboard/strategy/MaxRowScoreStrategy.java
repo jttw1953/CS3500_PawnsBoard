@@ -3,7 +3,6 @@ package cs3500.pawnsboard.strategy;
 import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.model.PlayerColor;
-import cs3500.pawnsboard.model.Card;
 
 /**
  * A strategy that tries to place a card so that the player

@@ -2,7 +2,6 @@ package cs3500.pawnsboard.view;
 
 import cs3500.pawnsboard.model.ICard;
 import cs3500.pawnsboard.model.ReadOnlyPawnsBoardModel;
-import cs3500.pawnsboard.model.Card;
 import cs3500.pawnsboard.model.PlayerColor;
 import cs3500.pawnsboard.model.InfluenceGrid;
 
