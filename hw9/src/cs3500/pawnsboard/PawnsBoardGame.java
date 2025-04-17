@@ -86,16 +86,30 @@ public final class PawnsBoardGame {
     /* helpers                                                              */
     /* -------------------------------------------------------------------- */
     private static Player makePlayer(String token) {
-        if ("human".equals(token)) return new HumanPlayer();
-        Strategy s = switch (token) {
-            case "fillfirst" -> new FillFirstStrategy();
-            case "maxrow"    -> new MaxRowScoreStrategy();
-            case "control"   -> new ControlBoardStrategy();
-            case "composite" -> new CompositeStrategy(
-                    List.of(new FillFirstStrategy(),
-                            new MaxRowScoreStrategy()));
-            default          -> null;  // unknown ⇒ human
-        };
+        if ("human".equals(token)) {
+            return new HumanPlayer();
+        }
+
+        Strategy s = null;
+        switch (token) {
+            case "fillfirst":
+                s = new FillFirstStrategy();
+                break;
+            case "maxrow":
+                s = new MaxRowScoreStrategy();
+                break;
+            case "control":
+                s = new ControlBoardStrategy();
+                break;
+            case "composite":
+                s = new CompositeStrategy(
+                        List.of(new FillFirstStrategy(), new MaxRowScoreStrategy()));
+                break;
+            default:
+                // Unknown strategy, fall back to human
+                break;
+        }
+
         return (s == null) ? new HumanPlayer() : new AIPlayer(s);
     }
 

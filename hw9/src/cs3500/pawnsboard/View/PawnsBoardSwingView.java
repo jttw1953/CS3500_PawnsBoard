@@ -69,11 +69,18 @@ public class PawnsBoardSwingView extends JFrame
         /* -------------------------------------------------- */
         addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
-                if (controller == null) return;
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_ENTER -> controller.onConfirm();
-                    case KeyEvent.VK_P     -> controller.onPass();
+                if (controller == null) {
+                    return;
                 }
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ENTER:
+                        controller.onConfirm();
+                        break;
+                    case KeyEvent.VK_P:
+                        controller.onPass();
+                        break;
+                }
+
             }
         });
 

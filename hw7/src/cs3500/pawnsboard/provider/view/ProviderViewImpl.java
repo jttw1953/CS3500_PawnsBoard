@@ -12,7 +12,7 @@ public class ProviderViewImpl implements IPawnsBoardGuiView {
 
   /**
    * Constructs a placeholder provider view. This constructor does not initialize any actual GUI.
-   * @param model the read-only view of the game model, which would be used in a real GUI implementation
+   * @param model the read-only view of the game model, used in a real GUI implementation
    */
   public ProviderViewImpl(ReadOnlyPawnsBoardModel model) {
     // No-op stub constructor

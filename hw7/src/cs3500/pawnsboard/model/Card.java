@@ -3,7 +3,7 @@ package cs3500.pawnsboard.model;
 /**
  * Represents a card in PawnsBoard, with a name, cost, value, and a 5x5 influence grid.
  */
-public class Card implements ICard{
+public class Card implements ICard {
   private final String name;
   private final int cost;   // must be 1-3
   private final int value;  // must be > 0
