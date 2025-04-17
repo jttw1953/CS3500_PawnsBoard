@@ -90,7 +90,11 @@ public final class PawnsBoardGame {
             return new HumanPlayer();
         }
 
+<<<<<<< HEAD
         Strategy s = null;
+=======
+        Strategy s;
+>>>>>>> fc20e28c3fc012fc29487ae12fbd05fe29402295
         switch (token) {
             case "fillfirst":
                 s = new FillFirstStrategy();
@@ -103,11 +107,19 @@ public final class PawnsBoardGame {
                 break;
             case "composite":
                 s = new CompositeStrategy(
+<<<<<<< HEAD
                         List.of(new FillFirstStrategy(), new MaxRowScoreStrategy()));
                 break;
             default:
                 // Unknown strategy, fall back to human
                 break;
+=======
+                        List.of(new FillFirstStrategy(),
+                                new MaxRowScoreStrategy()));
+                break;
+            default:
+                s = null;   // unknown ⇒ treat as human
+>>>>>>> fc20e28c3fc012fc29487ae12fbd05fe29402295
         }
 
         return (s == null) ? new HumanPlayer() : new AIPlayer(s);
