@@ -126,4 +126,48 @@ public class EnhancedPawnsBoardModelTest {
         int row = 1, col = model.getCols() - 1;
         model.placeCard(model.blueState.getHand().size() - 1, row, col);
     }
+
+
+    // Blue U/D mirroring
+    @Test
+    public void testBlueUpgradeMirrorsHorizontally() {
+        // make it Blue's turn
+        model.pass();
+
+        // Give Blue an upgrade card and a pawn stack at (1,3)
+        model.blueState.getHand().add(upgradeCard);
+        model.board[1][3].setPawns(PlayerColor.BLUE, 1);
+
+        // Place card, whose U is one column *right* in grid (dc = +1)
+        model.placeCard(model.blueState.getHand().size() - 1, 1, 3);
+        // For BLUE that dc flips → modifier should appear at (1,2)
+        assertEquals(1, model.valueModifiers[1][2]);
+    }
+
+    // Modifier affects row-score
+    @Test
+    public void testRowScoreUsesModifiedValue() {
+        // two upgrades so modifier = +2 at (1,2)
+        model.rawApplyInfluence(1,1,upgradeCard);
+        model.rawApplyInfluence(1,1,upgradeCard);
+
+        // prep cell for RED
+        model.board[1][2].setPawns(PlayerColor.RED, 3);
+        model.redState.getHand().add(normalCard); // value 5
+        model.placeCard(model.redState.getHand().size()-1,1,2);
+
+        // value 5 + mod 2 = 7
+        assertEquals(7, model.getRowScore(1, PlayerColor.RED));
+    }
+
+    // copyModel deep-copy
+    @Test
+    public void testCopyModelIndependenceEnhanced() {
+        IPawnsBoardModel copy = model.copyModel();
+        // mutate original
+        model.valueModifiers[1][2] = 99;
+        assertNotEquals(((EnhancedPawnsBoardModel) copy).valueModifiers[1][2], 99);
+    }
+
+    
 }
